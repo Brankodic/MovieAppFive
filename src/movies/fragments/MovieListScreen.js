@@ -4,7 +4,13 @@ import Spinner from 'react-native-loading-spinner-overlay';
 
 import useSearchMovies from '../services/useSearchMovies';
 import usePopularMovies from '../services/usePopularMovies';
-import {SearchInput, MovieList} from '../components';
+import {
+  SearchInput,
+  MoviesPopularList,
+  MoviesFreeList,
+  MoviesTrendingList,
+} from '../components';
+import {ScrollView} from 'react-native-gesture-handler';
 
 const MovieListScreen = ({navigation}) => {
   const [searchListState, setState] = useState(false);
@@ -55,12 +61,26 @@ const MovieListScreen = ({navigation}) => {
         searchScreenOff={handleSearchScreenOff}
         handleSearchQuery={handleSearchQuery}
       />
-      <Text style={text}>{handleRenderedText()}</Text>
-      <MovieList
-        moviesArray={handleRenderedList()}
-        loadMore={loadMoreMovies}
-        navigation={navigation}
-      />
+      <ScrollView>
+        <Text style={text}>{handleRenderedText()}</Text>
+        <MoviesPopularList
+          moviesArray={handleRenderedList()}
+          loadMore={loadMoreMovies}
+          navigation={navigation}
+        />
+        <Text style={text}>Free To Watch</Text>
+        <MoviesFreeList
+          moviesArray={handleRenderedList()}
+          loadMore={loadMoreMovies}
+          navigation={navigation}
+        />
+        <Text style={text}>Trending</Text>
+        <MoviesTrendingList
+          moviesArray={handleRenderedList()}
+          loadMore={loadMoreMovies}
+          navigation={navigation}
+        />
+      </ScrollView>
     </>
   );
 };
