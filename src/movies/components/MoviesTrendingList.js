@@ -3,9 +3,9 @@ import {FlatList, View, StyleSheet} from 'react-native';
 
 import MovieCard from './MovieCard';
 
-const MovieList = (props) => {
+const MoviesTrendingList = (props) => {
   const {moviesArray, loadMore, navigation} = props;
-  const {row, movieContainer, item} = styles;
+  const {movieContainer, item} = styles;
 
   const handlerKey = (movie) => {
     const key = movie.id + Math.floor(Math.random() * 100);
@@ -35,10 +35,6 @@ const MovieList = (props) => {
 };
 
 const styles = StyleSheet.create({
-  row: {
-    flex: 1,
-    justifyContent: 'space-around',
-  },
   movieContainer: {
     flexDirection: 'row',
   },
@@ -49,4 +45,4 @@ const styles = StyleSheet.create({
     height: 150,
   },
 });
-export default MovieList;
+export default MoviesTrendingList;
