@@ -1,25 +1,44 @@
 import React from 'react';
 import {View, Text, StyleSheet} from 'react-native';
 
-const TabsTrendingMovies = () => {
-    const {text,view} = styles;
+import usePopularMovies from '../services/usePopularMovies';
+import MoviesTrendingList from './MoviesTrendingList';
 
-    return (
+const TabsTrendingMovies = ({navigation}) => {
+  const {textButt, text, view} = styles;
+
+  const {moviesArray, loadMoreMovies} = usePopularMovies();
+
+  return (
+    <>
+      <Text style={text}>Trending</Text>
       <View style={view}>
-        <Text style={text}>Today</Text>
-        <Text style={text}>This Week</Text>
+        <Text style={textButt}>Today</Text>
+        <Text style={textButt}>This Week</Text>
       </View>
-    );
-  };
-  const styles = StyleSheet.create({
-    view: {
-      flexDirection: 'row',
-    },
-    text: {
-      backgroundColor: '#fff',
-      color: '#0B253F',
-      fontSize: 15,
-      margin: '4%',
-    },
-  });
+      <MoviesTrendingList
+        moviesArray={moviesArray}
+        loadMore={loadMoreMovies}
+        navigation={navigation}
+      />
+    </>
+  );
+};
+const styles = StyleSheet.create({
+  view: {
+    flexDirection: 'row',
+  },
+  text: {
+    backgroundColor: '#fff',
+    color: '#0B253F',
+    fontSize: 25,
+    margin: 15,
+  },
+  textButt: {
+    backgroundColor: '#fff',
+    color: '#0B253F',
+    fontSize: 15,
+    margin: '4%',
+  },
+});
 export default TabsTrendingMovies;

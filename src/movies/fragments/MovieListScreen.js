@@ -26,7 +26,7 @@ const MovieListScreen = ({navigation}) => {
     clearSearchMovies,
   } = useSearchMovies();
 
-  const {text, spinnerTextStyle} = styles;
+  const {spinnerTextStyle} = styles;
 
   const handleSearchScreenOn = () => {
     if (!searchListState) {
@@ -38,21 +38,13 @@ const MovieListScreen = ({navigation}) => {
     setState(false);
   };
 
-  const handleRenderedList = () => {
-    if (searchListState) {
-      return searchMovieState;
-    } else {
-      return moviesArray;
-    }
-  };
-
   const shouldRenderSearchList = () => {
     if (searchListState) {
       return (
         <>
           <Text style={styles.text}>Search Results</Text>
           <MoviesPopularList
-            moviesArray={handleRenderedList()}
+            moviesArray={searchMovieState}
             loadMore={loadMoreMovies}
             navigation={navigation}
           />
@@ -61,35 +53,17 @@ const MovieListScreen = ({navigation}) => {
     } else {
       return (
         <ScrollView>
-          <Text style={styles.text}>What's Popular</Text>
-          <TabsPopularMovies />
-          <MoviesPopularList
-            moviesArray={handleRenderedList()}
-            loadMore={loadMoreMovies}
-            navigation={navigation}
-          />
-          <Text style={text}>Free To Watch</Text>
-          <TabsFreeMovies />
-          <MoviesFreeList
-            moviesArray={handleRenderedList()}
-            loadMore={loadMoreMovies}
-            navigation={navigation}
-          />
-          <Text style={text}>Trending</Text>
-          <TabsTrendingMovies />
-          <MoviesTrendingList
-            moviesArray={handleRenderedList()}
-            loadMore={loadMoreMovies}
-            navigation={navigation}
-          />
+          <TabsPopularMovies navigation={navigation} />
+          <TabsFreeMovies navigation={navigation} />
+          <TabsTrendingMovies navigation={navigation} />
         </ScrollView>
       );
     }
   };
 
-const RenderList = shouldRenderSearchList();
- 
-return (
+  const RenderList = shouldRenderSearchList();
+
+  return (
     <>
       <Spinner
         value={isLoading}
@@ -109,12 +83,6 @@ return (
 const styles = StyleSheet.create({
   spinnerTextStyle: {
     color: '#FFF',
-  },
-  text: {
-    backgroundColor: '#fff',
-    color: '#0B253F',
-    fontSize: 25,
-    margin: 15,
   },
 });
 
