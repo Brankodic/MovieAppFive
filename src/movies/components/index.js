@@ -6,3 +6,6 @@ export {default as MoviesFreeList} from './MoviesFreeList';
 export {default as MoviesPopularList} from './MoviesPopularList';
 export {default as MoviesTrendingList} from './MoviesTrendingList';
 export {default as HeaderBackImage} from './HeaderBackImage';
+export {default as TabsFreeMovies} from './TabsFreeMovies';
+export {default as TabsPopularMovies} from './TabsPopularMovies';
+export {default as TabsTrendingMovies} from './TabsTrendingMovies';

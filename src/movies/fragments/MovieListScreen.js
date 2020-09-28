@@ -1,5 +1,6 @@
 import React, {useState} from 'react';
 import {StyleSheet, Text} from 'react-native';
+
 import Spinner from 'react-native-loading-spinner-overlay';
 
 import useSearchMovies from '../services/useSearchMovies';
@@ -9,6 +10,9 @@ import {
   MoviesPopularList,
   MoviesFreeList,
   MoviesTrendingList,
+  TabsFreeMovies,
+  TabsPopularMovies,
+  TabsTrendingMovies,
 } from '../components';
 import {ScrollView} from 'react-native-gesture-handler';
 
@@ -41,15 +45,51 @@ const MovieListScreen = ({navigation}) => {
       return moviesArray;
     }
   };
-  const handleRenderedText = () => {
+
+  const shouldRenderSearchList = () => {
     if (searchListState) {
-      return 'Search Results';
+      return (
+        <>
+          <Text style={styles.text}>Search Results</Text>
+          <MoviesPopularList
+            moviesArray={handleRenderedList()}
+            loadMore={loadMoreMovies}
+            navigation={navigation}
+          />
+        </>
+      );
     } else {
-      return "What's Popular";
+      return (
+        <ScrollView>
+          <Text style={styles.text}>What's Popular</Text>
+          <TabsPopularMovies />
+          <MoviesPopularList
+            moviesArray={handleRenderedList()}
+            loadMore={loadMoreMovies}
+            navigation={navigation}
+          />
+          <Text style={text}>Free To Watch</Text>
+          <TabsFreeMovies />
+          <MoviesFreeList
+            moviesArray={handleRenderedList()}
+            loadMore={loadMoreMovies}
+            navigation={navigation}
+          />
+          <Text style={text}>Trending</Text>
+          <TabsTrendingMovies />
+          <MoviesTrendingList
+            moviesArray={handleRenderedList()}
+            loadMore={loadMoreMovies}
+            navigation={navigation}
+          />
+        </ScrollView>
+      );
     }
   };
 
-  return (
+const RenderList = shouldRenderSearchList();
+ 
+return (
     <>
       <Spinner
         value={isLoading}
@@ -61,26 +101,7 @@ const MovieListScreen = ({navigation}) => {
         searchScreenOff={handleSearchScreenOff}
         handleSearchQuery={handleSearchQuery}
       />
-      <ScrollView>
-        <Text style={text}>{handleRenderedText()}</Text>
-        <MoviesPopularList
-          moviesArray={handleRenderedList()}
-          loadMore={loadMoreMovies}
-          navigation={navigation}
-        />
-        <Text style={text}>Free To Watch</Text>
-        <MoviesFreeList
-          moviesArray={handleRenderedList()}
-          loadMore={loadMoreMovies}
-          navigation={navigation}
-        />
-        <Text style={text}>Trending</Text>
-        <MoviesTrendingList
-          moviesArray={handleRenderedList()}
-          loadMore={loadMoreMovies}
-          navigation={navigation}
-        />
-      </ScrollView>
+      {RenderList}
     </>
   );
 };
