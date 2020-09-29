@@ -1,46 +1,62 @@
-import React from 'react';
-import {View, Text, StyleSheet} from 'react-native';
+import React, {useState} from 'react';
+import {View, Pressable, Text, StyleSheet} from 'react-native';
 
-import usePopularMovies from '../services/usePopularMovies';
-import MoviesPopularList from './MoviesPopularList';
-
-const TabsPopularMovies = ({navigation}) => {
-  const {textButt, text, view} = styles;
-
-  const {moviesArray, loadMoreMovies} = usePopularMovies();
+const TabsTrendingMovies = () => {
+  const [state, setState] = useState(1);
+  const {btn, btnPressed, view} = styles;
 
   return (
     <>
-      <Text style={text}>What's Popular</Text>
       <View style={view}>
-        <Text style={textButt}>Streaming</Text>
-        <Text style={textButt}>On TV</Text>
-        <Text style={textButt}>For Rent</Text>
-        <Text style={textButt}>In Theaters</Text>
+        <Pressable
+          onPress={() => { 
+            setState(1);
+          }}>
+          <Text style={[(state === 1) ? btnPressed : btn]}>Streaming</Text>  
+        </Pressable>
+        <Pressable
+          onPress={() => {
+            setState(2);
+          }}>
+          <Text style={[(state === 2) ? btnPressed : btn]}>On TV</Text>
+        </Pressable>
+        <Pressable
+          onPress={() => {
+            setState(3);
+          }}>
+          <Text style={[(state === 3) ? btnPressed : btn]}>For Rent</Text>
+        </Pressable>
+        <Pressable
+          onPress={() => {
+            setState(4);
+          }}>
+          <Text style={[(state === 4) ? btnPressed : btn]}>In Theaters</Text>
+        </Pressable>
       </View>
-      <MoviesPopularList
-        moviesArray={moviesArray}
-        loadMore={loadMoreMovies}
-        navigation={navigation}
-      />
     </>
   );
 };
 const styles = StyleSheet.create({
   view: {
     flexDirection: 'row',
+    marginLeft: '4%',
   },
-  text: {
-    backgroundColor: '#fff',
-    color: '#0B253F',
-    fontSize: 25,
-    margin: 15,
+  btnPressed: {
+    color: '#000000',
+    fontSize: 14,
+    fontWeight: 'bold',
+    margin: '3%',
+    borderBottomWidth: 2,
+    borderBottomColor: '#0B253F',
+    textAlign: 'center',
   },
-  textButt: {
-    backgroundColor: '#fff',
+  btn: {
     color: '#0B253F',
-    fontSize: 15,
-    margin: '4%',
+    textAlign: 'center',
+    borderBottomWidth:2,
+    borderBottomColor:'transparent',
+    fontSize: 14,
+    margin: '3%',
   },
 });
-export default TabsPopularMovies;
+export default TabsTrendingMovies;

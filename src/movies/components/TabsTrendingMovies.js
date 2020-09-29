@@ -1,44 +1,50 @@
-import React from 'react';
-import {View, Text, StyleSheet} from 'react-native';
+import React, {useState} from 'react';
+import {View, Pressable, Text, StyleSheet} from 'react-native';
 
-import usePopularMovies from '../services/usePopularMovies';
-import MoviesTrendingList from './MoviesTrendingList';
-
-const TabsTrendingMovies = ({navigation}) => {
-  const {textButt, text, view} = styles;
-
-  const {moviesArray, loadMoreMovies} = usePopularMovies();
+const TabsTrendingMovies = () => {
+  const [state, setState] = useState(true);
+  const {btn, btnPressed, view} = styles;
 
   return (
     <>
-      <Text style={text}>Trending</Text>
       <View style={view}>
-        <Text style={textButt}>Today</Text>
-        <Text style={textButt}>This Week</Text>
+        <Pressable
+          onPress={() => { 
+            setState(true);
+          }}>
+          <Text style={[state ? btnPressed : btn]}>Today</Text>  
+        </Pressable>
+        <Pressable
+          onPress={() => {
+            setState(false);
+          }}>
+          <Text style={[state ? btn : btnPressed]}>This Week</Text>
+        </Pressable>
       </View>
-      <MoviesTrendingList
-        moviesArray={moviesArray}
-        loadMore={loadMoreMovies}
-        navigation={navigation}
-      />
     </>
   );
 };
 const styles = StyleSheet.create({
   view: {
     flexDirection: 'row',
+    marginLeft: '4%',
   },
-  text: {
-    backgroundColor: '#fff',
-    color: '#0B253F',
-    fontSize: 25,
-    margin: 15,
+  btnPressed: {
+    color: '#000000',
+    fontSize: 14,
+    fontWeight: 'bold',
+    margin: '3%',
+    borderBottomWidth: 2,
+    borderBottomColor: '#0B253F',
+    textAlign: 'center',
   },
-  textButt: {
-    backgroundColor: '#fff',
+  btn: {
     color: '#0B253F',
-    fontSize: 15,
-    margin: '4%',
+    textAlign: 'center',
+    borderBottomWidth:2,
+    borderBottomColor:'transparent',
+    fontSize: 14,
+    margin: '3%',
   },
 });
 export default TabsTrendingMovies;

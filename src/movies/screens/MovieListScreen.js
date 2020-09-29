@@ -8,18 +8,14 @@ import usePopularMovies from '../services/usePopularMovies';
 import {
   SearchInput,
   MoviesPopularList,
-  MoviesFreeList,
-  MoviesTrendingList,
-  TabsFreeMovies,
-  TabsPopularMovies,
-  TabsTrendingMovies,
 } from '../components';
+import {FreeMovies, PopularMovies, TrendingMovies} from '../fragments';
 import {ScrollView} from 'react-native-gesture-handler';
 
 const MovieListScreen = ({navigation}) => {
   const [searchListState, setState] = useState(false);
 
-  const {isLoading, moviesArray, loadMoreMovies} = usePopularMovies();
+  const {isLoading,loadMoreMovies} = usePopularMovies();
   const {
     searchMovieState,
     handleSearchQuery,
@@ -53,9 +49,9 @@ const MovieListScreen = ({navigation}) => {
     } else {
       return (
         <ScrollView>
-          <TabsPopularMovies navigation={navigation} />
-          <TabsFreeMovies navigation={navigation} />
-          <TabsTrendingMovies navigation={navigation} />
+          <PopularMovies navigation={navigation} />
+          <FreeMovies navigation={navigation} />
+          <TrendingMovies navigation={navigation} />
         </ScrollView>
       );
     }

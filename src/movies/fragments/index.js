@@ -1,2 +1,3 @@
-export {default as MovieListScreen} from './MovieListScreen';
-export {default as MovieDetailsScreen} from './MovieDetailsScreen';
+export {default as FreeMovies} from './FreeMovies';
+export {default as PopularMovies} from './PopularMovies';
+export {default as TrendingMovies} from './TrendingMovies';
