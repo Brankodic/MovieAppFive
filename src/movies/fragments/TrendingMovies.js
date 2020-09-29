@@ -5,18 +5,16 @@ import usePopularMovies from '../services/usePopularMovies';
 import {MoviesTrendingList, TabsTrendingMovies} from '../components';
 
 const TrendingMovies = ({navigation}) => {
-
-
   const {text} = styles;
 
-  const {moviesArray, loadMoreMovies} = usePopularMovies();
+  const {trendingMovies, loadMoreMovies} = usePopularMovies();
 
   return (
     <>
       <Text style={text}>Trending</Text>
       <TabsTrendingMovies />
       <MoviesTrendingList
-        moviesArray={moviesArray}
+        moviesArray={trendingMovies}
         loadMore={loadMoreMovies}
         navigation={navigation}
       />
@@ -28,6 +26,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     color: '#0B253F',
     fontSize: 25,
+    fontWeight: 'bold',
     margin: 15,
   },
 });

@@ -1,26 +1,76 @@
 import {useState, useEffect} from 'react';
 
-import {getData, getMovieListUrl, getMoreMoviesUrl} from './api';
+import {
+  getData,
+  getPopularMoviesUrl,
+  getFreeMoviesUrl,
+  getTrendingTodayUrl,
+  getMoreMoviesUrl,
+} from './api';
 
 const usePopularMovies = () => {
   const [movieState, setState] = useState({
     isLoading: true,
-    apiMoviesPage: 2,
-    moviesArray: [],
+    popularMoviesPage: 2,
+    freeMoviesPage: 2,
+    trendingMoviesPage: 2,
+    popularMovies: [],
+    freeMovies: [],
+    trendingMovies: [],
   });
 
-  const {apiMoviesPage, moviesArray, isLoading} = movieState;
+  const {popularMovies, freeMovies, trendingMovies, isLoading} = movieState;
+
+  //Getting movie lists on startup
 
   useEffect(() => {
+    setState({...movieState, isLoading: true});
     (async () => {
-      const res = await getData(getMovieListUrl());
+      const popRes = await getData(getPopularMoviesUrl());
+      const freeRes = await getData(getFreeMoviesUrl());
+      const trendRes = await getData(getTrendingTodayUrl());
       setState({
         ...movieState,
-        moviesArray: res.results,
+        popularMovies: popRes.results,
+        freeMovies: freeRes.results,
+        trendingMovies: trendRes.results,
         isLoading: false,
       });
     })();
   }, []);
+
+  //Getting movie lists on tab change
+
+  const loadMovies = (urlPath, moviesType) => {
+    setState({...movieState, isLoading: true});
+    (async () => {
+      const res = await getData(getMoviesByPathUrl(urlPath));
+      if (moviesType === 'popular') {
+        setState({
+          ...movieState,
+          popularMoviesPage: 2,
+          popularMovies: res.results,
+          isLoading: false,
+        });
+      } else if (moviesType === 'free') {
+        setState({
+          ...movieState,
+          freeMoviesPage: 2,
+          freeMovies: res.results,
+          isLoading: false,
+        });
+      } else {
+        setState({
+          ...movieState,
+          trendingMoviesPage: 2,
+          trendingMovies: res.results,
+          isLoading: false,
+        });
+      }
+    })();
+  };
+
+  //Getting movie lists on scroll end
 
   const loadMoreMovies = () => {
     (async () => {
@@ -28,12 +78,19 @@ const usePopularMovies = () => {
       setState({
         ...movieState,
         apiMoviesPage: apiMoviesPage + 1,
-        moviesArray: moviesArray.concat(res.results),
+        popularMovies: popularMovies.concat(res.results),
       });
     })();
   };
 
-  return {moviesArray, isLoading, loadMoreMovies};
+  return {
+    popularMovies,
+    freeMovies,
+    trendingMovies,
+    isLoading,
+    loadMoreMovies,
+    loadMovies,
+  };
 };
 
 export default usePopularMovies;

@@ -1,43 +1,33 @@
 import React from 'react';
-import {View, Text, StyleSheet} from 'react-native';
+import {Text, StyleSheet} from 'react-native';
 
 import usePopularMovies from '../services/usePopularMovies';
-import {MoviesFreeList,TabsFreeMovies} from '../components';
+import {MoviesFreeList, TabsFreeMovies} from '../components';
 
 const FreeMovies = ({navigation}) => {
-  const {textButt, text, view} = styles;
+  const {text} = styles;
 
-  const {moviesArray, loadMoreMovies} = usePopularMovies();
+  const {freeMovies, loadMoreMovies} = usePopularMovies();
 
   return (
     <>
       <Text style={text}>Free To Watch</Text>
-     <TabsFreeMovies/>
+      <TabsFreeMovies />
       <MoviesFreeList
-        moviesArray={moviesArray}
+        moviesArray={freeMovies}
         loadMore={loadMoreMovies}
         navigation={navigation}
       />
     </>
   );
 };
-
 const styles = StyleSheet.create({
-  view: {
-    flexDirection: 'row',
-  },
   text: {
     backgroundColor: '#fff',
     color: '#0B253F',
     fontSize: 25,
+    fontWeight: 'bold',
     margin: 15,
   },
-  textButt: {
-    backgroundColor: '#fff',
-    color: '#0B253F',
-    fontSize: 15,
-    margin: '4%',
-  },
 });
-
 export default FreeMovies;

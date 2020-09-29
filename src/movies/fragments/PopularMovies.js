@@ -1,20 +1,20 @@
-import React from 'react';
-import {View, Text, StyleSheet} from 'react-native';
+import React, {useState} from 'react';
+import {Text, StyleSheet} from 'react-native';
 
 import usePopularMovies from '../services/usePopularMovies';
-import {MoviesPopularList,TabsPopularMovies} from '../components';
+import {MoviesPopularList, TabsPopularMovies} from '../components';
 
 const PopularMovies = ({navigation}) => {
   const {text} = styles;
 
-  const {moviesArray, loadMoreMovies} = usePopularMovies();
+  const {popularMovies, loadMoreMovies} = usePopularMovies();
 
   return (
     <>
       <Text style={text}>What's Popular</Text>
-      <TabsPopularMovies/>
+      <TabsPopularMovies />
       <MoviesPopularList
-        moviesArray={moviesArray}
+        moviesArray={popularMovies}
         loadMore={loadMoreMovies}
         navigation={navigation}
       />
@@ -22,20 +22,12 @@ const PopularMovies = ({navigation}) => {
   );
 };
 const styles = StyleSheet.create({
-  view: {
-    flexDirection: 'row',
-  },
   text: {
     backgroundColor: '#fff',
     color: '#0B253F',
     fontSize: 25,
+    fontWeight: 'bold',
     margin: 15,
-  },
-  textButt: {
-    backgroundColor: '#fff',
-    color: '#0B253F',
-    fontSize: 15,
-    margin: '4%',
   },
 });
 export default PopularMovies;
