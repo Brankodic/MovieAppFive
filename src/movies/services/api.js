@@ -1,4 +1,4 @@
-const API_KEY = '949998e8e5e4f813a43d4d37edfdb2c9'
+const API_KEY = '949998e8e5e4f813a43d4d37edfdb2c9';
 
 export const getPopularMoviesUrl = () => {
   return `https://api.themoviedb.org/3/movie/popular?api_key=${API_KEY}&language=en-US&page=1`;
@@ -13,11 +13,11 @@ export const getTrendingTodayUrl = () => {
 };
 
 export const getMoviesByPathUrl = (urlPath) => {
-  return `https://api.themoviedb.org/3/${urlPath}?api_key=${API_KEY}&language=en-US&page=1`
-}
+  return `https://api.themoviedb.org/3/${urlPath}?api_key=${API_KEY}&language=en-US&page=1`;
+};
 
-export const getMoreMoviesUrl = (apiMoviesPage) => {
-  return `https://api.themoviedb.org/3/movie/popular?api_key=${API_KEY}&language=en-US&page=${apiMoviesPage}`;
+export const getMoreMoviesUrl = (urlPath, apiMoviesPage) => {
+  return `https://api.themoviedb.org/3/${urlPath}?api_key=${API_KEY}&language=en-US&page=${apiMoviesPage}`;
 };
 
 export const getSingleMovieUrl = (movieId) => {

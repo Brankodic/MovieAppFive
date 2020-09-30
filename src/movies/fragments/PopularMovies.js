@@ -1,23 +1,26 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {Text, StyleSheet} from 'react-native';
 
 import usePopularMovies from '../services/usePopularMovies';
 import {MoviesPopularList, TabsPopularMovies} from '../components';
 
 const PopularMovies = ({navigation}) => {
+  const [state, setState] = useState('movie/popular');
   const {text} = styles;
 
   const {popularMovies, loadMoreMovies, loadMovies} = usePopularMovies();
 
   const loadPopularMovies = (urlPath, moviesType) => {
     loadMovies(urlPath, moviesType);
+    setState(urlPath);
   };
 
   return (
     <>
       <Text style={text}>What's Popular</Text>
-      <TabsPopularMovies loadPopularMovies={loadPopularMovies}/>
+      <TabsPopularMovies loadPopularMovies={loadPopularMovies} />
       <MoviesPopularList
+        urlPath={state}
         moviesArray={popularMovies}
         loadMore={loadMoreMovies}
         navigation={navigation}

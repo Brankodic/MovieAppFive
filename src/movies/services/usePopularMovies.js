@@ -26,6 +26,8 @@ const usePopularMovies = () => {
     trendingMovies,
     isLoading,
     popularMoviesPage,
+    trendingMoviesPage,
+    freeMoviesPage,
   } = movieState;
   //Getting movie lists on startup
 
@@ -78,15 +80,38 @@ const usePopularMovies = () => {
 
   //Getting movie lists on scroll end
 
-  const loadMoreMovies = () => {
-    (async () => {
-      const res = await getData(getMoreMoviesUrl(popularMoviesPage));
-      setState({
-        ...movieState,
-        popularMoviesPage: popularMoviesPage + 1,
-        popularMovies: popularMovies.concat(res.results),
-      });
-    })();
+  const loadMoreMovies = (urlPath, moviesType) => {
+    setState({...movieState, isLoading: true});
+    if (moviesType === 'popular') {
+      (async () => {
+        const res = await getData(getMoreMoviesUrl(urlPath, popularMoviesPage));
+        setState({
+          ...movieState,
+          popularMoviesPage: popularMoviesPage + 1,
+          popularMovies: popularMovies.concat(res.results),
+        });
+      })();
+    } else if (moviesType === 'free') {
+      (async () => {
+        const res = await getData(getMoreMoviesUrl(urlPath, freeMoviesPage));
+        setState({
+          ...movieState,
+          freeMoviesPage: freeMoviesPage + 1,
+          freeMovies: freeMovies.concat(res.results),
+        });
+      })();
+    } else {
+      (async () => {
+        const res = await getData(
+          getMoreMoviesUrl(urlPath, trendingMoviesPage),
+        );
+        setState({
+          ...movieState,
+          trendingMoviesPage: trendingMoviesPage + 1,
+          trendingMovies: trendingMovies.concat(res.results),
+        });
+      })();
+    }
   };
 
   return {
