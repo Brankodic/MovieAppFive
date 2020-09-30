@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import {View, Text, Pressable, StyleSheet} from 'react-native';
 
-const TabsFreeMovies = () => {
+const TabsFreeMovies = ({loadFreeMovies}) => {
   const [state, setState] = useState(true);
   const {btn, btnPressed, view} = styles;
 
@@ -11,12 +11,14 @@ const TabsFreeMovies = () => {
         <Pressable
           onPress={() => {
             setState(true);
+            loadFreeMovies('movie/top_rated', 'free');
           }}>
           <Text style={[state ? btnPressed : btn]}>Movies</Text>
         </Pressable>
         <Pressable
           onPress={() => {
             setState(false);
+            loadFreeMovies('tv/top_rated', 'free');
           }}>
           <Text style={[state ? btn : btnPressed]}>TV</Text>
         </Pressable>

@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import {View, Pressable, Text, StyleSheet} from 'react-native';
 
-const TabsTrendingMovies = () => {
+const TabsTrendingMovies = ({loadPopularMovies}) => {
   const [state, setState] = useState(1);
   const {btn, btnPressed, view} = styles;
 
@@ -9,28 +9,32 @@ const TabsTrendingMovies = () => {
     <>
       <View style={view}>
         <Pressable
-          onPress={() => { 
+          onPress={() => {
             setState(1);
+            loadPopularMovies('movie/popular', 'popular');
           }}>
-          <Text style={[(state === 1) ? btnPressed : btn]}>Streaming</Text>  
+          <Text style={[state === 1 ? btnPressed : btn]}>Popular</Text>
         </Pressable>
         <Pressable
           onPress={() => {
             setState(2);
+            loadPopularMovies('movie/upcoming', 'popular');
           }}>
-          <Text style={[(state === 2) ? btnPressed : btn]}>On TV</Text>
+          <Text style={[state === 2 ? btnPressed : btn]}>Upcoming</Text>
         </Pressable>
         <Pressable
           onPress={() => {
             setState(3);
+            loadPopularMovies('tv/popular', 'popular');
           }}>
-          <Text style={[(state === 3) ? btnPressed : btn]}>For Rent</Text>
+          <Text style={[state === 3 ? btnPressed : btn]}>On TV</Text>
         </Pressable>
         <Pressable
           onPress={() => {
             setState(4);
+            loadPopularMovies('movie/now_playing', 'popular');
           }}>
-          <Text style={[(state === 4) ? btnPressed : btn]}>In Theaters</Text>
+          <Text style={[state === 4 ? btnPressed : btn]}>In Theaters</Text>
         </Pressable>
       </View>
     </>
@@ -53,8 +57,8 @@ const styles = StyleSheet.create({
   btn: {
     color: '#0B253F',
     textAlign: 'center',
-    borderBottomWidth:2,
-    borderBottomColor:'transparent',
+    borderBottomWidth: 2,
+    borderBottomColor: 'transparent',
     fontSize: 14,
     margin: '3%',
   },

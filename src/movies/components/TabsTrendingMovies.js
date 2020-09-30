@@ -1,12 +1,9 @@
 import React, {useState} from 'react';
 import {View, Pressable, Text, StyleSheet} from 'react-native';
 
-const TabsTrendingMovies = (props) => {
+const TabsTrendingMovies = ({loadTrendingMovies}) => {
   const [state, setState] = useState(true);
   const {btn, btnPressed, view} = styles;
-
-  const {loadTrendingMovies} = props;
-
 
   return (
     <>

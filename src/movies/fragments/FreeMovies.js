@@ -7,12 +7,16 @@ import {MoviesFreeList, TabsFreeMovies} from '../components';
 const FreeMovies = ({navigation}) => {
   const {text} = styles;
 
-  const {freeMovies, loadMoreMovies} = usePopularMovies();
+  const {freeMovies, loadMoreMovies, loadMovies} = usePopularMovies();
+
+  const loadFreeMovies = (urlPath, moviesType) => {
+    loadMovies(urlPath, moviesType);
+  };
 
   return (
     <>
       <Text style={text}>Free To Watch</Text>
-      <TabsFreeMovies />
+      <TabsFreeMovies loadFreeMovies={loadFreeMovies} />
       <MoviesFreeList
         moviesArray={freeMovies}
         loadMore={loadMoreMovies}
