@@ -12,6 +12,10 @@ export const getTrendingTodayUrl = () => {
   return `https://api.themoviedb.org/3/trending/movie/day?api_key=${API_KEY}&language=en-US&page=1`;
 };
 
+export const getMoviesByPathUrl = (urlPath) => {
+  return `https://api.themoviedb.org/3/${urlPath}?api_key=${API_KEY}&language=en-US&page=1`
+}
+
 export const getMoreMoviesUrl = (apiMoviesPage) => {
   return `https://api.themoviedb.org/3/movie/popular?api_key=${API_KEY}&language=en-US&page=${apiMoviesPage}`;
 };

@@ -6,6 +6,7 @@ import {
   getFreeMoviesUrl,
   getTrendingTodayUrl,
   getMoreMoviesUrl,
+  getMoviesByPathUrl,
 } from './api';
 
 const usePopularMovies = () => {
@@ -19,8 +20,13 @@ const usePopularMovies = () => {
     trendingMovies: [],
   });
 
-  const {popularMovies, freeMovies, trendingMovies, isLoading} = movieState;
-
+  const {
+    popularMovies,
+    freeMovies,
+    trendingMovies,
+    isLoading,
+    popularMoviesPage,
+  } = movieState;
   //Getting movie lists on startup
 
   useEffect(() => {
@@ -74,10 +80,10 @@ const usePopularMovies = () => {
 
   const loadMoreMovies = () => {
     (async () => {
-      const res = await getData(getMoreMoviesUrl(apiMoviesPage));
+      const res = await getData(getMoreMoviesUrl(popularMoviesPage));
       setState({
         ...movieState,
-        apiMoviesPage: apiMoviesPage + 1,
+        popularMoviesPage: popularMoviesPage + 1,
         popularMovies: popularMovies.concat(res.results),
       });
     })();

@@ -6,7 +6,6 @@ import MovieCard from './MovieCard';
 const MoviesPopularList = (props) => {
   const {moviesArray, loadMore, navigation} = props;
   const {movieContainer, item} = styles;
-
   const handlerKey = (movie) => {
     const key = movie.id + Math.floor(Math.random() * 100);
     return key.toString();

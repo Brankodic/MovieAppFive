@@ -6,15 +6,18 @@ import {MoviesTrendingList, TabsTrendingMovies} from '../components';
 
 const TrendingMovies = ({navigation}) => {
   const {text} = styles;
+  const {trendingMovies, loadMoreMovies, loadMovies} = usePopularMovies();
 
-  const {trendingMovies, loadMoreMovies} = usePopularMovies();
+  const loadTrendingMovies = (urlPath, moviesType) => {
+    loadMovies(urlPath, moviesType);
+  };
 
   return (
     <>
       <Text style={text}>Trending</Text>
-      <TabsTrendingMovies />
+      <TabsTrendingMovies loadTrendingMovies={loadTrendingMovies} />
       <MoviesTrendingList
-        moviesArray={trendingMovies}
+        trendingMovies={trendingMovies}
         loadMore={loadMoreMovies}
         navigation={navigation}
       />

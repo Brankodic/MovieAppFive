@@ -4,21 +4,21 @@ import {FlatList, View, StyleSheet} from 'react-native';
 import MovieCard from './MovieCard';
 
 const MoviesTrendingList = (props) => {
-  const {moviesArray, loadMore, navigation} = props;
+  const {trendingMovies, loadMore, navigation} = props;
   const {movieContainer, item} = styles;
 
   const handlerKey = (movie) => {
     const key = movie.id + Math.floor(Math.random() * 100);
     return key.toString();
   };
-
+  
   return (
     <View>
       <FlatList
         contentContainerStyle={movieContainer}
         horizontal
         onEndReached={loadMore}
-        data={moviesArray}
+        data={trendingMovies}
         keyExtractor={(movie) => {
           return handlerKey(movie);
         }}
