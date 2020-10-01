@@ -1,18 +1,14 @@
 import React, {useState} from 'react';
 import {SearchBar} from 'react-native-elements';
-
 import useSearchMovies from '../services/useSearchMovies';
 
-const SearchInput = (props) => {
+const SearchInput = ({searchScreenOn, searchScreenOff, handleSearchQuery}) => {
   const [inputState, setState] = useState('');
-
-  const {searchScreenOn, searchScreenOff, handleSearchQuery} = props;
-
   const {clearSearchMovies} = useSearchMovies();
 
   const handlerInput = (value) => {
-    setState(value);
     searchScreenOn();
+    setState(value);
     handleSearchQuery(value);
   };
   const handlerClear = () => {

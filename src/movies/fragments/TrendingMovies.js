@@ -1,16 +1,15 @@
 import React, {useState} from 'react';
 import {Text, StyleSheet} from 'react-native';
-
-import usePopularMovies from '../services/usePopularMovies';
+import useMovieLists from '../services/useMovieLists';
 import {MoviesTrendingList, TabsTrendingMovies} from '../components';
 
-const TrendingMovies = ({navigation}) => {
+const TrendingMovies = ({navigation, keyHandler}) => {
   const [state, setState] = useState('trending/movie/day');
   const {text} = styles;
-  const {trendingMovies, loadMoreMovies, loadMovies} = usePopularMovies();
+  const {trendingMovies, loadMoreOnScroll, loadOnTabChange} = useMovieLists();
 
   const loadTrendingMovies = (urlPath, moviesType) => {
-    loadMovies(urlPath, moviesType);
+    loadOnTabChange(urlPath, moviesType);
     setState(urlPath);
   };
 
@@ -19,14 +18,16 @@ const TrendingMovies = ({navigation}) => {
       <Text style={text}>Trending</Text>
       <TabsTrendingMovies loadTrendingMovies={loadTrendingMovies} />
       <MoviesTrendingList
+        keyHandler={keyHandler}
         urlPath={state}
         trendingMovies={trendingMovies}
-        loadMore={loadMoreMovies}
+        loadMore={loadMoreOnScroll}
         navigation={navigation}
       />
     </>
   );
 };
+
 const styles = StyleSheet.create({
   text: {
     backgroundColor: '#fff',
@@ -37,4 +38,5 @@ const styles = StyleSheet.create({
     marginLeft: 15,
   },
 });
+
 export default TrendingMovies;

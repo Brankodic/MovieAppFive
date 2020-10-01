@@ -1,15 +1,7 @@
 import {useState, useEffect} from 'react';
+import {getData, getMoreMoviesUrl, getMoviesByPathUrl} from './api';
 
-import {
-  getData,
-  getPopularMoviesUrl,
-  getFreeMoviesUrl,
-  getTrendingTodayUrl,
-  getMoreMoviesUrl,
-  getMoviesByPathUrl,
-} from './api';
-
-const usePopularMovies = () => {
+const useMovieLists = () => {
   const [movieState, setState] = useState({
     isLoading: true,
     popularMoviesPage: 2,
@@ -21,22 +13,20 @@ const usePopularMovies = () => {
   });
 
   const {
+    isLoading,
     popularMovies,
     freeMovies,
     trendingMovies,
-    isLoading,
     popularMoviesPage,
     trendingMoviesPage,
     freeMoviesPage,
   } = movieState;
-  //Getting movie lists on startup
 
   useEffect(() => {
-    setState({...movieState, isLoading: true});
     (async () => {
-      const popRes = await getData(getPopularMoviesUrl());
-      const freeRes = await getData(getFreeMoviesUrl());
-      const trendRes = await getData(getTrendingTodayUrl());
+      const popRes = await getData(getMoviesByPathUrl('movie/popular'));
+      const freeRes = await getData(getMoviesByPathUrl('movie/top_rated'));
+      const trendRes = await getData(getMoviesByPathUrl('trending/movie/day'));
       setState({
         ...movieState,
         popularMovies: popRes.results,
@@ -47,10 +37,7 @@ const usePopularMovies = () => {
     })();
   }, []);
 
-  //Getting movie lists on tab change
-
-  const loadMovies = (urlPath, moviesType) => {
-    setState({...movieState, isLoading: true});
+  const loadOnTabChange = (urlPath, moviesType) => {
     (async () => {
       const res = await getData(getMoviesByPathUrl(urlPath));
       if (moviesType === 'popular') {
@@ -78,10 +65,7 @@ const usePopularMovies = () => {
     })();
   };
 
-  //Getting movie lists on scroll end
-
-  const loadMoreMovies = (urlPath, moviesType) => {
-    setState({...movieState, isLoading: true});
+  const loadMoreOnScroll = (urlPath, moviesType) => {
     if (moviesType === 'popular') {
       (async () => {
         const res = await getData(getMoreMoviesUrl(urlPath, popularMoviesPage));
@@ -119,9 +103,9 @@ const usePopularMovies = () => {
     freeMovies,
     trendingMovies,
     isLoading,
-    loadMoreMovies,
-    loadMovies,
+    loadOnTabChange,
+    loadMoreOnScroll,
   };
 };
 
-export default usePopularMovies;
+export default useMovieLists;

@@ -1,9 +1,7 @@
 import React from 'react';
 import {View, Text, StyleSheet} from 'react-native';
 
-const MovieCastText = (props) => {
-  const {state} = props;
-
+const MovieCastText = ({state}) => {
   const {container, box, boldText} = styles;
   const {charachters, director, production} = state;
 
@@ -17,12 +15,10 @@ const MovieCastText = (props) => {
           </View>
         );
       })}
-
       <View style={box}>
         <Text style={boldText}>{director}</Text>
         <Text>Director</Text>
       </View>
-
       {production.map((name, key) => {
         return (
           <View style={box} key={key}>

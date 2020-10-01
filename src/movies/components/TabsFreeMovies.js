@@ -5,27 +5,29 @@ const TabsFreeMovies = ({loadFreeMovies}) => {
   const [state, setState] = useState(true);
   const {btn, btnPressed, view} = styles;
 
+  const onPressMovies = () => {
+    setState(true);
+    loadFreeMovies('movie/top_rated', 'free');
+  };
+  const onPressTv = () => {
+    setState(false);
+    loadFreeMovies('tv/top_rated', 'free');
+  };
+
   return (
     <>
       <View style={view}>
-        <Pressable
-          onPress={() => {
-            setState(true);
-            loadFreeMovies('movie/top_rated', 'free');
-          }}>
+        <Pressable onPress={() => onPressMovies()}>
           <Text style={[state ? btnPressed : btn]}>Movies</Text>
         </Pressable>
-        <Pressable
-          onPress={() => {
-            setState(false);
-            loadFreeMovies('tv/top_rated', 'free');
-          }}>
+        <Pressable onPress={() => onPressTv()}>
           <Text style={[state ? btn : btnPressed]}>TV</Text>
         </Pressable>
       </View>
     </>
   );
 };
+
 const styles = StyleSheet.create({
   view: {
     flexDirection: 'row',

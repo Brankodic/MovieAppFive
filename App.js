@@ -1,13 +1,27 @@
-import 'react-native-gesture-handler';
 import React from 'react';
-import {View} from 'react-native';
-import {NavigationContainer} from '@react-navigation/native';
-import {createStackNavigator} from '@react-navigation/stack';
-
-import {MovieListScreen, MovieDetailsScreen} from './src/movies/screens';
-import {HeaderImage, HeaderBackImage} from './src/movies/components';
+import { View } from 'react-native';
+import 'react-native-gesture-handler';
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
+import { MovieListScreen, MovieDetailsScreen } from './src/movies/screens';
+import { HeaderImage, HeaderBackImage } from './src/movies/components';
 
 const Stack = createStackNavigator();
+
+const navOptionsListScreen = {
+  headerTitle: (props) => <HeaderImage {...props} />,
+  cardStyle: { backgroundColor: 'white' },
+  headerStyle: { backgroundColor: '#0B253F' },
+};
+
+const navOptionsDetailsScreen = {
+  headerBackImage: () => <HeaderBackImage />,
+  headerTitle: (props) => <HeaderImage {...props} />,
+  headerRight: () => <View />,
+  cardStyle: { backgroundColor: 'white' },
+  headerStyle: { backgroundColor: '#0B253F' },
+  headerBackTitleVisible: false,
+};
 
 class App extends React.Component {
   render() {
@@ -15,23 +29,12 @@ class App extends React.Component {
       <NavigationContainer>
         <Stack.Navigator initialRouteName="MovieListScreen">
           <Stack.Screen
-            options={{
-              headerTitle: (props) => <HeaderImage {...props} />,
-              cardStyle: {backgroundColor: 'white'},
-              headerStyle: {backgroundColor: '#0B253F'},
-            }}
+            options={navOptionsListScreen}
             name="MovieListScreen"
             component={MovieListScreen}
           />
           <Stack.Screen
-            options={{
-              headerBackImage: () => <HeaderBackImage />,
-              headerTitle: (props) => <HeaderImage {...props} />,
-              headerRight: () => <View />,
-              cardStyle: {backgroundColor: 'white'},
-              headerStyle: {backgroundColor: '#0B253F'},
-              headerBackTitleVisible: false,
-            }}
+            options={navOptionsDetailsScreen}
             name="MovieDetails"
             component={MovieDetailsScreen}
           />

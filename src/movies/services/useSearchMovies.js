@@ -1,6 +1,5 @@
 import {useState} from 'react';
 import {debounce} from 'lodash';
-
 import {getData, getSearchMoviesUrl} from './api';
 
 const usePopularMovies = () => {

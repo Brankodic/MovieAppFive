@@ -1,29 +1,16 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 import {FlatList, View, StyleSheet} from 'react-native';
 import MovieCard from './MovieCard';
 
-const MoviesTrendingList = ({keyHandler, trendingMovies, loadMore, navigation, urlPath}) => {
+const MoviesSearchList = ({keyHandler, searchedMovies, navigation}) => {
   const {movieContainer, item} = styles;
-
-  useEffect(() => {
-    return () => {
-      listViewRef.scrollToOffset({
-        offset: 0,
-        animated: true,
-      });
-    };
-  }, [urlPath]);
 
   return (
     <View>
       <FlatList
-        ref={(ref) => {
-          listViewRef = ref;
-        }}
         contentContainerStyle={movieContainer}
-        horizontal
-        onEndReached={() => loadMore(urlPath, 'trending')}
-        data={trendingMovies}
+        vertical
+        data={searchedMovies}
         keyExtractor={(movie) => {
           return keyHandler(movie);
         }}
@@ -41,14 +28,14 @@ const MoviesTrendingList = ({keyHandler, trendingMovies, loadMore, navigation, u
 
 const styles = StyleSheet.create({
   movieContainer: {
-    flexDirection: 'row',
+    flexDirection: 'column',
   },
   item: {
     margin: 5,
     marginBottom: 20,
-    width: 130,
-    height: 170,
+    width: 160,
+    height: 200,
   },
 });
 
-export default MoviesTrendingList;
+export default MoviesSearchList;

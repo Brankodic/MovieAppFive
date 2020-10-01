@@ -1,7 +1,6 @@
 import {useEffect, useState} from 'react';
 import _ from 'lodash';
-
-import {getData, getSingleMovieUrl, getMovieCreditsUrl} from '../services/api';
+import {getData, getSingleMovieUrl, getMovieCreditsUrl} from './api';
 
 const useMovieDetails = (movieId) => {
   const [state, setState] = useState({
@@ -21,14 +20,12 @@ const useMovieDetails = (movieId) => {
       await getData(getSingleMovieUrl(movieId)).then((data) => {
         (async () => {
           const resCrew = await getData(getMovieCreditsUrl(movieId));
-
           const direct = _.filter(resCrew.crew, (crewMember) => {
             return crewMember.job === 'Director';
           });
           const product = _.filter(resCrew.crew, (crewMember) => {
             return crewMember.department === 'Production';
           });
-
           setState({
             ...state,
             movie: data,
@@ -47,6 +44,7 @@ const useMovieDetails = (movieId) => {
   }, []);
 
   return {state};
+  
 };
 
 export default useMovieDetails;

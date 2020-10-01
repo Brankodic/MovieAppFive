@@ -5,27 +5,29 @@ const TabsTrendingMovies = ({loadTrendingMovies}) => {
   const [state, setState] = useState(true);
   const {btn, btnPressed, view} = styles;
 
+  const onPressDay = () => {
+    setState(true);
+    loadTrendingMovies('trending/movie/day', 'trending');
+  };
+  const onPressWeek = () => {
+    setState(false);
+    loadTrendingMovies('trending/movie/week', 'trending');
+  };
+
   return (
     <>
       <View style={view}>
-        <Pressable
-          onPress={() => {
-            setState(true);
-            loadTrendingMovies('trending/movie/day', 'trending');
-          }}>
+        <Pressable onPress={() => onPressDay()}>
           <Text style={[state ? btnPressed : btn]}>Today</Text>
         </Pressable>
-        <Pressable
-          onPress={() => {
-            setState(false);
-            loadTrendingMovies('trending/movie/week', 'trending');
-          }}>
+        <Pressable onPress={() => onPressWeek()}>
           <Text style={[state ? btn : btnPressed]}>This Week</Text>
         </Pressable>
       </View>
     </>
   );
 };
+
 const styles = StyleSheet.create({
   view: {
     flexDirection: 'row',
@@ -49,4 +51,5 @@ const styles = StyleSheet.create({
     margin: '3%',
   },
 });
+
 export default TabsTrendingMovies;

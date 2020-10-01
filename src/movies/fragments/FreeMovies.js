@@ -1,16 +1,15 @@
 import React, {useState} from 'react';
 import {Text, StyleSheet} from 'react-native';
-
-import usePopularMovies from '../services/usePopularMovies';
+import useMovieLists from '../services/useMovieLists';
 import {MoviesFreeList, TabsFreeMovies} from '../components';
 
-const FreeMovies = ({navigation}) => {
+const FreeMovies = ({navigation, keyHandler}) => {
   const [state, setState] = useState('movie/top_rated');
   const {text} = styles;
-  const {freeMovies, loadMoreMovies, loadMovies} = usePopularMovies();
+  const {freeMovies, loadMoreOnScroll, loadOnTabChange} = useMovieLists();
 
   const loadFreeMovies = (urlPath, moviesType) => {
-    loadMovies(urlPath, moviesType);
+    loadOnTabChange(urlPath, moviesType);
     setState(urlPath);
   };
 
@@ -19,14 +18,16 @@ const FreeMovies = ({navigation}) => {
       <Text style={text}>Free To Watch</Text>
       <TabsFreeMovies loadFreeMovies={loadFreeMovies} />
       <MoviesFreeList
+        keyHandler={keyHandler}
         urlPath={state}
         freeMovies={freeMovies}
-        loadMore={loadMoreMovies}
+        loadMore={loadMoreOnScroll}
         navigation={navigation}
       />
     </>
   );
 };
+
 const styles = StyleSheet.create({
   text: {
     backgroundColor: '#fff',
@@ -37,4 +38,5 @@ const styles = StyleSheet.create({
     marginLeft: 15,
   },
 });
+
 export default FreeMovies;

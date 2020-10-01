@@ -1,17 +1,18 @@
 import React from 'react';
-import {StyleSheet, Text, View, ImageBackground} from 'react-native';
-import Spinner from 'react-native-loading-spinner-overlay';
-
+import {
+  StyleSheet,
+  Text,
+  View,
+  ImageBackground,
+  ActivityIndicator,
+} from 'react-native';
 import useMovieDetails from '../services/useMovieDetails';
-
 import {MovieCastText} from '../components';
 
 const MovieDetailsScreen = ({route}) => {
   const {state} = useMovieDetails(route.params.movieId);
-
   const {movie, image, year, genre, language, isLoading} = state;
   const {overview, title, release_date, runtime} = movie;
-
   const {
     container,
     imageStyle,
@@ -22,16 +23,14 @@ const MovieDetailsScreen = ({route}) => {
     boldText,
     overviewTitle,
     overviewStyle,
-    spinnerTextStyle,
+    spinnerContainer,
   } = styles;
 
   return (
     <View style={container}>
-      <Spinner
-        visible={isLoading}
-        textContent={'Loading...'}
-        textStyle={spinnerTextStyle}
-      />
+      <View style={spinnerContainer}>
+        <ActivityIndicator animating={isLoading} size="large" color="#aaa" />
+      </View>
       <ImageBackground source={{uri: image}} style={imageStyle}>
         <View style={imgContainer}>
           <Text style={titleStyle}>
@@ -55,12 +54,18 @@ const MovieDetailsScreen = ({route}) => {
 };
 
 const styles = StyleSheet.create({
-  spinnerTextStyle: {
-    color: '#FFF',
-  },
   container: {
     flex: 1,
     backgroundColor: '#fff',
+  },
+  spinnerContainer: {
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    top: 0,
+    bottom: 0,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   imageStyle: {
     flexDirection: 'column',
