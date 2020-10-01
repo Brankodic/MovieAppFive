@@ -1,23 +1,38 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {FlatList, View, StyleSheet} from 'react-native';
 
 import MovieCard from './MovieCard';
 
 const MoviesTrendingList = (props) => {
-  const {trendingMovies, loadMore, navigation} = props;
+  const {trendingMovies, loadMore, navigation, urlPath} = props;
   const {movieContainer, item} = styles;
 
   const handlerKey = (movie) => {
-    const key = movie.id + Math.floor(Math.random() * 100);
-    return key.toString();
+    return (
+      movie.id.toString() +
+      new Date().getTime().toString() +
+      Math.floor(Math.random() * Math.floor(new Date().getTime())).toString()
+    );
   };
-  
+
+  useEffect(() => {
+    return () => {
+      listViewRef.scrollToOffset({
+        offset: 0,
+        animated: true,
+      });
+    };
+  }, [urlPath]);
+
   return (
     <View>
       <FlatList
+        ref={(ref) => {
+          listViewRef = ref;
+        }}
         contentContainerStyle={movieContainer}
         horizontal
-        onEndReached={loadMore}
+        onEndReached={() => loadMore(urlPath, 'trending')}
         data={trendingMovies}
         keyExtractor={(movie) => {
           return handlerKey(movie);

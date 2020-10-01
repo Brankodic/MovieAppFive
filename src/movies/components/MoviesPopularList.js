@@ -4,14 +4,17 @@ import {FlatList, View, StyleSheet} from 'react-native';
 import MovieCard from './MovieCard';
 
 const MoviesPopularList = (props) => {
-  const {moviesArray, loadMore, navigation, urlPath} = props;
+  const {popularMovies, loadMore, navigation, urlPath} = props;
   const {movieContainer, item} = styles;
 
   const handlerKey = (movie) => {
-    const key = movie.id + Math.floor(Math.random() * 1000);
-    return key.toString();
+    return (
+      movie.id.toString() +
+      new Date().getTime().toString() +
+      Math.floor(Math.random() * Math.floor(new Date().getTime())).toString()
+    );
   };
-  
+
   useEffect(() => {
     return () => {
       listViewRef.scrollToOffset({
@@ -28,10 +31,9 @@ const MoviesPopularList = (props) => {
           listViewRef = ref;
         }}
         contentContainerStyle={movieContainer}
-        onEndReachedThreshold={0.01}
         horizontal
         onEndReached={() => loadMore(urlPath, 'popular')}
-        data={moviesArray}
+        data={popularMovies}
         keyExtractor={(movie) => {
           return handlerKey(movie);
         }}
