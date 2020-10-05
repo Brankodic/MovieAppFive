@@ -21,16 +21,14 @@ const MovieListScreen = ({navigation}) => {
   } = useSearchMovies();
   const {spinnerContainer} = styles;
 
-  const handleSearchScreenOn = () => {
-    if (!searchListState) {
+  const handleSearchScreenChange = (searchState) => {
+    if (!searchListState && searchState) {
       setState(true);
+    } else if (!searchState) {
+      clearSearchMovies();
+      setState(false);
     }
   };
-  const handleSearchScreenOff = () => {
-    clearSearchMovies();
-    setState(false);
-  };
-
   const keyHandler = (movie) => {
     return movie.id.toString() + new Date().getTime().toString();
   };
@@ -64,9 +62,8 @@ const MovieListScreen = ({navigation}) => {
         <ActivityIndicator animating={isLoading} size="large" color="#aaa" />
       </View>
       <SearchInput
-        searchScreenOn={handleSearchScreenOn}
-        searchScreenOff={handleSearchScreenOff}
-        handleSearchQuery={handleSearchQuery}
+        isSearchActive={handleSearchScreenChange}
+        onInputValueChange={handleSearchQuery}
       />
       {shouldRenderSearchList()}
     </>

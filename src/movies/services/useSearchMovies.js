@@ -9,7 +9,7 @@ const usePopularMovies = () => {
     if (value.length > 2) {
       const handleChange = debounce((text) => {
         loadSearchMovies(text);
-      }, 500);
+      }, 1000);
       handleChange(value);
     } else {
       setState([]);
