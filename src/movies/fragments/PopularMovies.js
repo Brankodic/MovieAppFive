@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import {Text, StyleSheet} from 'react-native';
 import useMovieLists from '../services/useMovieLists';
-import {MoviesPopularList, TabsPopularMovies} from '../components';
+import {MoviesList, TabsPopularMovies} from '../components';
 
 const PopularMovies = ({navigation, keyHandler}) => {
   const [state, setState] = useState('movie/popular');
@@ -12,16 +12,19 @@ const PopularMovies = ({navigation, keyHandler}) => {
     loadOnTabChange(urlPath, moviesType);
     setState(urlPath);
   };
+  const handleOnEndReach = () => {
+    loadMoreOnScroll(state, 'popular');
+  };
 
   return (
     <>
       <Text style={text}>What's Popular</Text>
       <TabsPopularMovies loadPopularMovies={loadPopularMovies} />
-      <MoviesPopularList
+      <MoviesList
+        handleOnEndReach={handleOnEndReach}
         keyHandler={keyHandler}
         urlPath={state}
-        popularMovies={popularMovies}
-        loadMore={loadMoreOnScroll}
+        movies={popularMovies}
         navigation={navigation}
       />
     </>

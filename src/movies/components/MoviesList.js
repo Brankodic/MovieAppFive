@@ -2,17 +2,13 @@ import React, {useEffect} from 'react';
 import {FlatList, View, StyleSheet} from 'react-native';
 import MovieCard from './MovieCard';
 
-const MoviesPopularList = ({
-  keyHandler,
-  popularMovies,
-  loadMore,
-  navigation,
-  urlPath,
-}) => {
+const MoviesList = (props) => {
   const {movieContainer, item} = styles;
+  const {keyHandler, movies, handleOnEndReach, navigation, urlPath} = props;
 
   useEffect(() => {
     listViewRef.scrollToOffset({
+      offset: 0,
       animated: true,
     });
   }, [urlPath]);
@@ -25,11 +21,9 @@ const MoviesPopularList = ({
         }}
         contentContainerStyle={movieContainer}
         horizontal
-        onEndReached={() => loadMore(urlPath, 'popular')}
-        data={popularMovies}
-        keyExtractor={(movie) => {
-          return keyHandler(movie);
-        }}
+        onEndReached={handleOnEndReach}
+        data={movies}
+        keyExtractor={keyHandler}
         renderItem={(movie) => {
           return (
             <View style={item}>
@@ -54,4 +48,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default MoviesPopularList;
+export default MoviesList;

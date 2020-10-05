@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import {Text, StyleSheet} from 'react-native';
 import useMovieLists from '../services/useMovieLists';
-import {MoviesFreeList, TabsFreeMovies} from '../components';
+import {MoviesList, TabsFreeMovies} from '../components';
 
 const FreeMovies = ({navigation, keyHandler}) => {
   const [state, setState] = useState('movie/top_rated');
@@ -12,16 +12,19 @@ const FreeMovies = ({navigation, keyHandler}) => {
     loadOnTabChange(urlPath, moviesType);
     setState(urlPath);
   };
+  const handleOnEndReach = () => {
+    loadMoreOnScroll(state, 'free');
+  };
 
   return (
     <>
       <Text style={text}>Free To Watch</Text>
       <TabsFreeMovies loadFreeMovies={loadFreeMovies} />
-      <MoviesFreeList
+      <MoviesList
+        handleOnEndReach={handleOnEndReach}
         keyHandler={keyHandler}
         urlPath={state}
-        freeMovies={freeMovies}
-        loadMore={loadMoreOnScroll}
+        movies={freeMovies}
         navigation={navigation}
       />
     </>

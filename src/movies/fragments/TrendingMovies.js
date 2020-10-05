@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import {Text, StyleSheet} from 'react-native';
 import useMovieLists from '../services/useMovieLists';
-import {MoviesTrendingList, TabsTrendingMovies} from '../components';
+import {MoviesList, TabsTrendingMovies} from '../components';
 
 const TrendingMovies = ({navigation, keyHandler}) => {
   const [state, setState] = useState('trending/movie/day');
@@ -12,16 +12,19 @@ const TrendingMovies = ({navigation, keyHandler}) => {
     loadOnTabChange(urlPath, moviesType);
     setState(urlPath);
   };
+  const handleOnEndReach = () => {
+    loadMoreOnScroll(state, 'trending');
+  };
 
   return (
     <>
       <Text style={text}>Trending</Text>
       <TabsTrendingMovies loadTrendingMovies={loadTrendingMovies} />
-      <MoviesTrendingList
+      <MoviesList
+        handleOnEndReach={handleOnEndReach}
         keyHandler={keyHandler}
         urlPath={state}
-        trendingMovies={trendingMovies}
-        loadMore={loadMoreOnScroll}
+        movies={trendingMovies}
         navigation={navigation}
       />
     </>

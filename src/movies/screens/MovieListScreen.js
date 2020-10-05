@@ -8,7 +8,7 @@ import {
 } from 'react-native';
 import useSearchMovies from '../services/useSearchMovies';
 import useMovieLists from '../services/useMovieLists';
-import {SearchInput, MoviesSearchList} from '../components';
+import {SearchInput, MoviesList} from '../components';
 import {FreeMovies, PopularMovies, TrendingMovies} from '../fragments';
 
 const MovieListScreen = ({navigation}) => {
@@ -32,11 +32,7 @@ const MovieListScreen = ({navigation}) => {
   };
 
   const keyHandler = (movie) => {
-    return (
-      movie.id.toString() +
-      new Date().getTime().toString() +
-      Math.floor(Math.random() * Math.floor(new Date().getTime())).toString()
-    );
+    return movie.id.toString() + new Date().getTime().toString();
   };
 
   const shouldRenderSearchList = () => {
@@ -44,8 +40,8 @@ const MovieListScreen = ({navigation}) => {
       return (
         <>
           <Text style={styles.text}>Search Results</Text>
-          <MoviesSearchList
-            searchedMovies={searchMovieState}
+          <MoviesList
+            movies={searchMovieState}
             navigation={navigation}
             keyHandler={keyHandler}
           />
