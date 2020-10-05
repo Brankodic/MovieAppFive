@@ -2,12 +2,12 @@ import React, {useState} from 'react';
 import {SearchBar} from 'react-native-elements';
 import useSearchMovies from '../services/useSearchMovies';
 
-const SearchInput = ({isSearchActive, onInputValueChange}) => {
+const SearchInput = ({setSearchActiveState, onInputValueChange}) => {
   const [inputState, setState] = useState('');
   const {clearSearchMovies} = useSearchMovies();
 
   const handlerInput = (value) => {
-    isSearchActive(true);
+    setSearchActiveState(true);
     setState(value);
     onInputValueChange(value);
   };
@@ -17,10 +17,10 @@ const SearchInput = ({isSearchActive, onInputValueChange}) => {
   };
   
   const onInputFieldClick = () => {
-    isSearchActive(true);
+    setSearchActiveState(true);
   };
   const onCancelClick = () => {
-    isSearchActive(false);
+    setSearchActiveState(false);
   };
 
   return (

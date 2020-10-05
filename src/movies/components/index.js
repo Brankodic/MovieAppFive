@@ -4,6 +4,4 @@ export {default as MovieCastText} from './MovieCastText';
 export {default as MovieCard} from './MovieCard';
 export {default as MoviesList} from './MoviesList';
 export {default as HeaderBackImage} from './HeaderBackImage';
-export {default as TabsFreeMovies} from './TabsFreeMovies';
-export {default as TabsPopularMovies} from './TabsPopularMovies';
-export {default as TabsTrendingMovies} from './TabsTrendingMovies';
+export {default as TabsMovies} from './TabsMovies';

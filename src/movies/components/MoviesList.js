@@ -4,7 +4,14 @@ import MovieCard from './MovieCard';
 
 const MoviesList = (props) => {
   const {movieContainer, item} = styles;
-  const {keyHandler, movies, handleOnEndReach, navigation, urlPath} = props;
+  const {
+    keyHandler,
+    movies,
+    onEndReach,
+    navigation,
+    urlPath,
+    moviesType,
+  } = props;
 
   useEffect(() => {
     listViewRef.scrollToOffset({
@@ -21,7 +28,7 @@ const MoviesList = (props) => {
         }}
         contentContainerStyle={movieContainer}
         horizontal
-        onEndReached={handleOnEndReach}
+        onEndReached={() => onEndReach(urlPath, moviesType)}
         data={movies}
         keyExtractor={keyHandler}
         renderItem={(movie) => {

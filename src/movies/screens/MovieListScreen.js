@@ -9,7 +9,7 @@ import {
 import useSearchMovies from '../services/useSearchMovies';
 import useMovieLists from '../services/useMovieLists';
 import {SearchInput, MoviesList} from '../components';
-import {FreeMovies, PopularMovies, TrendingMovies} from '../fragments';
+import {Movies} from '../fragments';
 
 const MovieListScreen = ({navigation}) => {
   const [searchListState, setState] = useState(false);
@@ -33,6 +33,21 @@ const MovieListScreen = ({navigation}) => {
     return movie.id.toString() + new Date().getTime().toString();
   };
 
+  const {
+    popularMovies,
+    freeMovies,
+    trendingMovies,
+    loadMoreOnScroll,
+    loadOnTabChange,
+  } = useMovieLists();
+
+  const handleTabPress = (urlPath, moviesType) => {
+    loadOnTabChange(urlPath, moviesType);
+  };
+  const handleOnEndReach = (urlPath, moviesType) => {
+    loadMoreOnScroll(urlPath, moviesType);
+  };
+
   const shouldRenderSearchList = () => {
     if (searchListState) {
       return (
@@ -48,9 +63,30 @@ const MovieListScreen = ({navigation}) => {
     } else {
       return (
         <ScrollView>
-          <PopularMovies navigation={navigation} keyHandler={keyHandler} />
-          <FreeMovies navigation={navigation} keyHandler={keyHandler} />
-          <TrendingMovies navigation={navigation} keyHandler={keyHandler} />
+          <Movies
+            moviesArray={popularMovies}
+            moviesType={'popular'}
+            handleTabPress={handleTabPress}
+            handleOnEndReach={handleOnEndReach}
+            navigation={navigation}
+            keyHandler={keyHandler}
+          />
+          <Movies
+            moviesArray={freeMovies}
+            moviesType={'free'}
+            handleTabPress={handleTabPress}
+            handleOnEndReach={handleOnEndReach}
+            navigation={navigation}
+            keyHandler={keyHandler}
+          />
+          <Movies
+            moviesArray={trendingMovies}
+            moviesType={'trending'}
+            handleTabPress={handleTabPress}
+            handleOnEndReach={handleOnEndReach}
+            navigation={navigation}
+            keyHandler={keyHandler}
+          />
         </ScrollView>
       );
     }
@@ -62,7 +98,7 @@ const MovieListScreen = ({navigation}) => {
         <ActivityIndicator animating={isLoading} size="large" color="#aaa" />
       </View>
       <SearchInput
-        isSearchActive={handleSearchScreenChange}
+        setSearchActiveState={handleSearchScreenChange}
         onInputValueChange={handleSearchQuery}
       />
       {shouldRenderSearchList()}
