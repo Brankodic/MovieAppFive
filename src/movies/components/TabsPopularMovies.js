@@ -34,7 +34,7 @@ const TabsTrendingMovies = ({loadPopularMovies}) => {
         <Pressable onPress={() => onPressTv()}>
           <Text style={[state === 3 ? btnPressed : btn]}>On TV</Text>
         </Pressable>
-        <Pressable onPress={() => onPressTheaters}>
+        <Pressable onPress={() => onPressTheaters()}>
           <Text style={[state === 4 ? btnPressed : btn]}>In Theaters</Text>
         </Pressable>
       </View>

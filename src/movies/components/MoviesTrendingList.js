@@ -2,16 +2,20 @@ import React, {useEffect} from 'react';
 import {FlatList, View, StyleSheet} from 'react-native';
 import MovieCard from './MovieCard';
 
-const MoviesTrendingList = ({keyHandler, trendingMovies, loadMore, navigation, urlPath}) => {
+const MoviesTrendingList = ({
+  keyHandler,
+  trendingMovies,
+  loadMore,
+  navigation,
+  urlPath,
+}) => {
   const {movieContainer, item} = styles;
 
   useEffect(() => {
-    return () => {
-      listViewRef.scrollToOffset({
-        offset: 0,
-        animated: true,
-      });
-    };
+    listViewRef.scrollToOffset({
+      offset: 0,
+      animated: true,
+    });
   }, [urlPath]);
 
   return (
