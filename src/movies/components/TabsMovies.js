@@ -1,54 +1,109 @@
 import React, {useState} from 'react';
-import {View, Pressable, Text, StyleSheet} from 'react-native';
+import {View, StyleSheet} from 'react-native';
+import {
+  POPULAR_MOVIES,
+  FREE_MOVIES,
+  POPULAR_URL_PATH,
+  UPCOMING_URL_PATH,
+  POPULAR_TV_URL_PATH,
+  THEATERS_URL_PATH,
+  TOP_RATED_URL_PATH,
+  TV_TOP_RATED_URL_PATH,
+  TRENDING_DAY_URL_PATH,
+  TRENDING_WEEK_URL_PATH,
+} from '../../../constants.js';
+import PressableTab from './PressableTab';
+
+const TAB_TITLES = [
+  'Popular',
+  'Upcoming',
+  'On TV',
+  'In Theaters',
+  'Movies',
+  'TV',
+  'Today',
+  'This Week',
+];
 
 const TabsMovies = ({onTabPress, moviesType}) => {
-  const [tabState, setTab] = useState(1);
-  const {btn, btnPressed, view} = styles;
+  const [tabState, setTab] = useState({
+    popular: POPULAR_URL_PATH,
+    free: TOP_RATED_URL_PATH,
+    trending: TRENDING_DAY_URL_PATH,
+  });
+  const {popular, free, trending} = tabState;
+  const {view} = styles;
 
-  const onPressTab = (urlPath, tabState) => {
-    setTab(tabState);
+  const onPressTab = (urlPath) => {
+    if (moviesType === POPULAR_MOVIES) setTab({popular: urlPath});
+    else if (moviesType === FREE_MOVIES) setTab({free: urlPath});
+    else setTab({trending: urlPath});
+
     onTabPress(urlPath, moviesType);
-    console.log(urlPath);
   };
 
   const tabsToRender = () => {
-    if (moviesType === 'popular') {
+    if (moviesType === POPULAR_MOVIES) {
       return (
         <View style={view}>
-          <Pressable onPress={() => onPressTab('movie/popular', 1)}>
-            <Text style={[tabState === 1 ? btnPressed : btn]}>Popular</Text>
-          </Pressable>
-          <Pressable onPress={() => onPressTab('movie/upcoming', 2)}>
-            <Text style={[tabState === 2 ? btnPressed : btn]}>Upcoming</Text>
-          </Pressable>
-          <Pressable onPress={() => onPressTab('tv/popular', 3)}>
-            <Text style={[tabState === 3 ? btnPressed : btn]}>On TV</Text>
-          </Pressable>
-          <Pressable onPress={() => onPressTab('movie/now_playing', 4)}>
-            <Text style={[tabState === 4 ? btnPressed : btn]}>In Theaters</Text>
-          </Pressable>
+          <PressableTab
+            onPressTab={onPressTab}
+            tabState={popular}
+            urlPath={POPULAR_URL_PATH}
+            tabTitle={TAB_TITLES[0]}
+          />
+          <PressableTab
+            onPressTab={onPressTab}
+            tabState={popular}
+            urlPath={UPCOMING_URL_PATH}
+            tabTitle={TAB_TITLES[1]}
+          />
+          <PressableTab
+            onPressTab={onPressTab}
+            tabState={popular}
+            urlPath={POPULAR_TV_URL_PATH}
+            tabTitle={TAB_TITLES[2]}
+          />
+          <PressableTab
+            onPressTab={onPressTab}
+            tabState={popular}
+            urlPath={THEATERS_URL_PATH}
+            tabTitle={TAB_TITLES[3]}
+          />
         </View>
       );
-    } else if (moviesType === 'free') {
+    } else if (moviesType === FREE_MOVIES) {
       return (
         <View style={view}>
-          <Pressable onPress={() => onPressTab('movie/top_rated', 1)}>
-            <Text style={[tabState === 1 ? btnPressed : btn]}>Movies</Text>
-          </Pressable>
-          <Pressable onPress={() => onPressTab('tv/top_rated', 2)}>
-            <Text style={[tabState === 2 ? btnPressed : btn]}>TV</Text>
-          </Pressable>
+          <PressableTab
+            onPressTab={onPressTab}
+            tabState={free}
+            urlPath={TOP_RATED_URL_PATH}
+            tabTitle={TAB_TITLES[4]}
+          />
+          <PressableTab
+            onPressTab={onPressTab}
+            tabState={free}
+            urlPath={TV_TOP_RATED_URL_PATH}
+            tabTitle={TAB_TITLES[5]}
+          />
         </View>
       );
     } else {
       return (
         <View style={view}>
-          <Pressable onPress={() => onPressTab('trending/movie/day', 1)}>
-            <Text style={[tabState === 1 ? btnPressed : btn]}>Today</Text>
-          </Pressable>
-          <Pressable onPress={() => onPressTab('trending/movie/week', 2)}>
-            <Text style={[tabState === 2 ? btnPressed : btn]}>This Week</Text>
-          </Pressable>
+          <PressableTab
+            onPressTab={onPressTab}
+            tabState={trending}
+            urlPath={TRENDING_DAY_URL_PATH}
+            tabTitle={TAB_TITLES[6]}
+          />
+          <PressableTab
+            onPressTab={onPressTab}
+            tabState={trending}
+            urlPath={TRENDING_WEEK_URL_PATH}
+            tabTitle={TAB_TITLES[7]}
+          />
         </View>
       );
     }
@@ -61,23 +116,6 @@ const styles = StyleSheet.create({
   view: {
     flexDirection: 'row',
     marginLeft: '4%',
-  },
-  btnPressed: {
-    color: '#000000',
-    fontSize: 14,
-    fontWeight: 'bold',
-    margin: '3%',
-    borderBottomWidth: 2,
-    borderBottomColor: '#0B253F',
-    textAlign: 'center',
-  },
-  btn: {
-    color: '#0B253F',
-    textAlign: 'center',
-    borderBottomWidth: 2,
-    borderBottomColor: 'transparent',
-    fontSize: 14,
-    margin: '3%',
   },
 });
 

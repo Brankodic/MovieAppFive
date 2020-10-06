@@ -1,10 +1,18 @@
 import React, {useState} from 'react';
 import {Text, StyleSheet} from 'react-native';
-import useMovieLists from '../services/useMovieLists';
+import {
+  POPULAR_MOVIES,
+  FREE_MOVIES,
+  TRENDING_MOVIES,
+  POPULAR_URL_PATH,
+} from '../../../constants.js';
 import {MoviesList, TabsMovies} from '../components';
 
+const POPULAR_TITLE = "What's Popular";
+const FREE_TITLE = 'Free To Watch';
+
 const Movies = (props) => {
-  const [urlPathState, setUrlPath] = useState('movie/popular');
+  const [urlPathState, setUrlPath] = useState(POPULAR_URL_PATH);
   const {text} = styles;
   const {
     navigation,
@@ -16,9 +24,9 @@ const Movies = (props) => {
   } = props;
 
   const renderedHeader = () => {
-    if (moviesType === 'popular') return "What's Popular";
-    else if (moviesType === 'free') return 'Free To Watch';
-    else return 'Trending';
+    if (moviesType === POPULAR_MOVIES) return POPULAR_TITLE;
+    else if (moviesType === FREE_MOVIES) return FREE_TITLE;
+    else return TRENDING_MOVIES;
   };
 
   const onTabPress = (urlPath, moviesType) => {

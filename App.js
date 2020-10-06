@@ -4,6 +4,7 @@ import 'react-native-gesture-handler';
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import {screens} from './src/movies';
+import {MOVIE_LIST, MOVIE_DETAILS} from './constants';
 import {HeaderImage, HeaderBackImage} from './src/movies';
 
 const Stack = createStackNavigator();
@@ -25,7 +26,7 @@ const navOptionsListScreen = {
 };
 
 const navOptionsDetailsScreen = {
-  headerBackImage: () => <HeaderBackImage />,         //component without function gives me an error
+  headerBackImage: () => <HeaderBackImage />, //component without function gives me an error
   headerTitle: (props) => <HeaderImage {...props} />,
   headerRight: () => <View />,
   cardStyle: backgroundWhite,
@@ -39,15 +40,15 @@ class App extends React.Component {
 
     return (
       <NavigationContainer>
-        <Stack.Navigator initialRouteName="MovieListScreen">
+        <Stack.Navigator initialRouteName={MOVIE_LIST}>
           <Stack.Screen
             options={navOptionsListScreen}
-            name="MovieListScreen"
+            name={MOVIE_LIST}
             component={MovieListScreen}
           />
           <Stack.Screen
             options={navOptionsDetailsScreen}
-            name="MovieDetails"
+            name={MOVIE_DETAILS}
             component={MovieDetailsScreen}
           />
         </Stack.Navigator>

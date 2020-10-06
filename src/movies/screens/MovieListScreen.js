@@ -8,17 +8,30 @@ import {
 } from 'react-native';
 import useSearchMovies from '../services/useSearchMovies';
 import useMovieLists from '../services/useMovieLists';
+import {
+  POPULAR_MOVIES,
+  FREE_MOVIES,
+  TRENDING_MOVIES,
+} from '../../../constants.js';
 import {SearchInput, MoviesList} from '../components';
 import {Movies} from '../fragments';
 
 const MovieListScreen = ({navigation}) => {
   const [searchListState, setState] = useState(false);
-  const {isLoading} = useMovieLists();
   const {
     searchMovieState,
     handleSearchQuery,
     clearSearchMovies,
   } = useSearchMovies();
+  const {
+    isLoading,
+    popularMovies,
+    freeMovies,
+    trendingMovies,
+    loadMoreOnScroll,
+    loadOnTabChange,
+  } = useMovieLists();
+
   const {spinnerContainer} = styles;
 
   const handleSearchScreenChange = (searchState) => {
@@ -29,23 +42,14 @@ const MovieListScreen = ({navigation}) => {
       setState(false);
     }
   };
-  const keyHandler = (movie) => {
-    return movie.id.toString() + new Date().getTime().toString();
-  };
-
-  const {
-    popularMovies,
-    freeMovies,
-    trendingMovies,
-    loadMoreOnScroll,
-    loadOnTabChange,
-  } = useMovieLists();
-
   const handleTabPress = (urlPath, moviesType) => {
     loadOnTabChange(urlPath, moviesType);
   };
   const handleOnEndReach = (urlPath, moviesType) => {
     loadMoreOnScroll(urlPath, moviesType);
+  };
+  const keyHandler = (movie) => {
+    return movie.id.toString() + new Date().getTime().toString();
   };
 
   const shouldRenderSearchList = () => {
@@ -65,7 +69,7 @@ const MovieListScreen = ({navigation}) => {
         <ScrollView>
           <Movies
             moviesArray={popularMovies}
-            moviesType={'popular'}
+            moviesType={POPULAR_MOVIES}
             handleTabPress={handleTabPress}
             handleOnEndReach={handleOnEndReach}
             navigation={navigation}
@@ -73,7 +77,7 @@ const MovieListScreen = ({navigation}) => {
           />
           <Movies
             moviesArray={freeMovies}
-            moviesType={'free'}
+            moviesType={FREE_MOVIES}
             handleTabPress={handleTabPress}
             handleOnEndReach={handleOnEndReach}
             navigation={navigation}
@@ -81,7 +85,7 @@ const MovieListScreen = ({navigation}) => {
           />
           <Movies
             moviesArray={trendingMovies}
-            moviesType={'trending'}
+            moviesType={TRENDING_MOVIES}
             handleTabPress={handleTabPress}
             handleOnEndReach={handleOnEndReach}
             navigation={navigation}
