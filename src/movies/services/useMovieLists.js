@@ -11,9 +11,9 @@ import {getData, getMoreMoviesUrl, getMoviesByPathUrl} from './api';
 const useMovieLists = () => {
   const [movieState, setState] = useState({
     isLoading: true,
-    popularMoviesPage: 2,
-    freeMoviesPage: 2,
-    trendingMoviesPage: 2,
+    nextPopularPage: 2,
+    nextFreePage: 2,
+    nextTrendingPage: 2,
     popularMovies: [],
     freeMovies: [],
     trendingMovies: [],
@@ -24,9 +24,9 @@ const useMovieLists = () => {
     popularMovies,
     freeMovies,
     trendingMovies,
-    popularMoviesPage,
-    trendingMoviesPage,
-    freeMoviesPage,
+    nextPopularPage,
+    nextFreePage,
+    nextTrendingPage,
   } = movieState;
 
   useEffect(() => {
@@ -50,21 +50,21 @@ const useMovieLists = () => {
       if (moviesType === POPULAR_MOVIES) {
         setState({
           ...movieState,
-          popularMoviesPage: 2,
+          nextPopularPage: 2,
           popularMovies: res.results,
           isLoading: false,
         });
       } else if (moviesType === FREE_MOVIES) {
         setState({
           ...movieState,
-          freeMoviesPage: 2,
+          nextFreePage: 2,
           freeMovies: res.results,
           isLoading: false,
         });
       } else {
         setState({
           ...movieState,
-          trendingMoviesPage: 2,
+          nextTrendingPage: 2,
           trendingMovies: res.results,
           isLoading: false,
         });
@@ -75,30 +75,28 @@ const useMovieLists = () => {
   const loadMoreOnScroll = (urlPath, moviesType) => {
     if (moviesType === POPULAR_MOVIES) {
       (async () => {
-        const res = await getData(getMoreMoviesUrl(urlPath, popularMoviesPage));
+        const res = await getData(getMoreMoviesUrl(urlPath, nextPopularPage));
         setState({
           ...movieState,
-          popularMoviesPage: popularMoviesPage + 1,
+          nextPopularPage: nextPopularPage + 1,
           popularMovies: popularMovies.concat(res.results),
         });
       })();
     } else if (moviesType === FREE_MOVIES) {
       (async () => {
-        const res = await getData(getMoreMoviesUrl(urlPath, freeMoviesPage));
+        const res = await getData(getMoreMoviesUrl(urlPath, nextFreePage));
         setState({
           ...movieState,
-          freeMoviesPage: freeMoviesPage + 1,
+          nextFreePage: nextFreePage + 1,
           freeMovies: freeMovies.concat(res.results),
         });
       })();
     } else {
       (async () => {
-        const res = await getData(
-          getMoreMoviesUrl(urlPath, trendingMoviesPage),
-        );
+        const res = await getData(getMoreMoviesUrl(urlPath, nextTrendingPage));
         setState({
           ...movieState,
-          trendingMoviesPage: trendingMoviesPage + 1,
+          nextTrendingPage: nextTrendingPage + 1,
           trendingMovies: trendingMovies.concat(res.results),
         });
       })();

@@ -52,7 +52,7 @@ const MovieListScreen = ({navigation}) => {
     return movie.id.toString() + new Date().getTime().toString();
   };
 
-  const shouldRenderSearchList = () => {
+  const renderLists = () => {
     if (searchListState) {
       return (
         <>
@@ -105,7 +105,7 @@ const MovieListScreen = ({navigation}) => {
         setSearchActiveState={handleSearchScreenChange}
         onInputValueChange={handleSearchQuery}
       />
-      {shouldRenderSearchList()}
+      {renderLists()}
     </>
   );
 };
