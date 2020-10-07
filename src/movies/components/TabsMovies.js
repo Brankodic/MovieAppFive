@@ -90,7 +90,7 @@ const TabsMovies = ({onTabPress, moviesType}) => {
     });
   };
 
-  const resolveRenderedTabs = () => {
+  const resolveTabsToRender= () => {
     if (moviesType === POPULAR_MOVIES) {
       return renderPopTabs();
     } else if (moviesType === FREE_MOVIES) {
@@ -100,11 +100,7 @@ const TabsMovies = ({onTabPress, moviesType}) => {
     }
   };
 
-  const tabsToRender = () => {
-    return <View style={view}>{resolveRenderedTabs()}</View>;
-  };
-
-  return tabsToRender();
+  return <View style={view}>{resolveTabsToRender()}</View>;
 };
 
 const styles = StyleSheet.create({
