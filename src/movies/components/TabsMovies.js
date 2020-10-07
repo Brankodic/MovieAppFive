@@ -4,13 +4,11 @@ import {
   POPULAR_MOVIES,
   FREE_MOVIES,
   POPULAR_URL_PATH,
-  UPCOMING_URL_PATH,
-  POPULAR_TV_URL_PATH,
-  THEATERS_URL_PATH,
   TOP_RATED_URL_PATH,
-  TV_TOP_RATED_URL_PATH,
   TRENDING_DAY_URL_PATH,
-  TRENDING_WEEK_URL_PATH,
+  popularUrlArray,
+  freeUrlArray,
+  trendingUrlArray,
 } from '../../../constants.js';
 import PressableTab from './PressableTab';
 
@@ -33,14 +31,6 @@ const TabsMovies = ({onTabPress, moviesType}) => {
   });
   const {popular, free, trending} = tabState;
   const {view} = styles;
-  const popularUrlArray = [
-    POPULAR_URL_PATH,
-    UPCOMING_URL_PATH,
-    POPULAR_TV_URL_PATH,
-    THEATERS_URL_PATH,
-  ];
-  const freeUrlArray = [TOP_RATED_URL_PATH, TV_TOP_RATED_URL_PATH];
-  const trendingUrlArray = [TRENDING_DAY_URL_PATH, TRENDING_WEEK_URL_PATH];
 
   const onPressTab = (urlPath) => {
     if (moviesType === POPULAR_MOVIES) setTab({popular: urlPath});
@@ -90,7 +80,7 @@ const TabsMovies = ({onTabPress, moviesType}) => {
     });
   };
 
-  const resolveTabsToRender= () => {
+  const resolveTabsToRender = () => {
     if (moviesType === POPULAR_MOVIES) {
       return renderPopTabs();
     } else if (moviesType === FREE_MOVIES) {
