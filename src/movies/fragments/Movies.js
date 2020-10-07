@@ -3,13 +3,13 @@ import {Text, StyleSheet} from 'react-native';
 import {
   POPULAR_MOVIES,
   FREE_MOVIES,
-  TRENDING_MOVIES,
   POPULAR_URL_PATH,
 } from '../../../constants.js';
 import {MoviesList, TabsMovies} from '../components';
 
 const POPULAR_TITLE = "What's Popular";
 const FREE_TITLE = 'Free To Watch';
+const TRENDING_TITLE = 'Trending'
 
 const Movies = (props) => {
   const [urlPathState, setUrlPath] = useState(POPULAR_URL_PATH);
@@ -26,7 +26,7 @@ const Movies = (props) => {
   const renderedHeader = () => {
     if (moviesType === POPULAR_MOVIES) return POPULAR_TITLE;
     else if (moviesType === FREE_MOVIES) return FREE_TITLE;
-    else return TRENDING_MOVIES;
+    else return TRENDING_TITLE;
   };
 
   const onTabPress = (urlPath, moviesType) => {

@@ -1,6 +1,12 @@
 import {useEffect, useState} from 'react';
 import _ from 'lodash';
-import {getData, getSingleMovieUrl, getMovieCreditsUrl} from './api';
+import {
+  getSingleMovieDetails,
+  movieData,
+  crewData,
+  directorData,
+  productionData,
+} from './api';
 
 const useMovieDetails = (movieId) => {
   const [state, setState] = useState({
@@ -15,36 +21,30 @@ const useMovieDetails = (movieId) => {
     production: [],
   });
 
-  useEffect(() => {
-    (async () => {
-      await getData(getSingleMovieUrl(movieId)).then((data) => {
-        (async () => {
-          const resCrew = await getData(getMovieCreditsUrl(movieId));
-          const direct = _.filter(resCrew.crew, (crewMember) => {
-            return crewMember.job === 'Director';
-          });
-          const product = _.filter(resCrew.crew, (crewMember) => {
-            return crewMember.department === 'Production';
-          });
-          setState({
-            ...state,
-            movie: data,
-            image: state.image + data.poster_path,
-            year: data.release_date.slice(0, 4),
-            language: data.original_language.toUpperCase(),
-            genre: data.genres[0].name,
-            charachters: resCrew.cast.slice(0, 2).map((n) => n.name),
-            director: direct[0].name,
-            production: product.slice(0, 3).map((n) => n.name),
-            isLoading: false,
-          });
-        })();
+  function fetchData() {
+    getSingleMovieDetails(movieId).then(() => {
+      const {poster_path, release_date, original_language, genres} = movieData;
+      const {cast} = crewData;
+      setState({
+        ...state,
+        movie: movieData,
+        image: state.image + poster_path,
+        year: release_date.slice(0, 4),
+        language: original_language.toUpperCase(),
+        genre: genres[0].name,
+        charachters: cast.slice(0, 2).map((n) => n.name),
+        director: directorData[0].name,
+        production: productionData.slice(0, 3).map((n) => n.name),
+        isLoading: false,
       });
-    })();
+    });
+  }
+
+  useEffect(() => {
+    fetchData();     //mmmm ...clean
   }, []);
 
   return {state};
-  
 };
 
 export default useMovieDetails;

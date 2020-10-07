@@ -26,7 +26,7 @@ const navOptionsListScreen = {
 };
 
 const navOptionsDetailsScreen = {
-  headerBackImage: () => <HeaderBackImage />, //component without function gives me an error
+  headerBackImage: HeaderBackImage,
   headerTitle: (props) => <HeaderImage {...props} />,
   headerRight: () => <View />,
   cardStyle: backgroundWhite,
