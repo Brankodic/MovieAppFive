@@ -33,6 +33,14 @@ const TabsMovies = ({onTabPress, moviesType}) => {
   });
   const {popular, free, trending} = tabState;
   const {view} = styles;
+  const popularUrlArray = [
+    POPULAR_URL_PATH,
+    UPCOMING_URL_PATH,
+    POPULAR_TV_URL_PATH,
+    THEATERS_URL_PATH,
+  ];
+  const freeUrlArray = [TOP_RATED_URL_PATH, TV_TOP_RATED_URL_PATH];
+  const trendingUrlArray = [TRENDING_DAY_URL_PATH, TRENDING_WEEK_URL_PATH];
 
   const onPressTab = (urlPath) => {
     if (moviesType === POPULAR_MOVIES) setTab({popular: urlPath});
@@ -42,71 +50,58 @@ const TabsMovies = ({onTabPress, moviesType}) => {
     onTabPress(urlPath, moviesType);
   };
 
-  const tabsToRender = () => {
+  const renderPopTabs = () => {
+    return popularUrlArray.map((urlPath, i) => {
+      return (
+        <PressableTab
+          key={urlPath}
+          onPressTab={onPressTab}
+          tabState={popular}
+          urlPath={urlPath}
+          tabTitle={TAB_TITLES[i]}
+        />
+      );
+    });
+  };
+  const renderFreeTabs = () => {
+    return freeUrlArray.map((urlPath, i) => {
+      return (
+        <PressableTab
+          key={urlPath}
+          onPressTab={onPressTab}
+          tabState={free}
+          urlPath={urlPath}
+          tabTitle={TAB_TITLES[i + 4]}
+        />
+      );
+    });
+  };
+  const renderTrendTabs = () => {
+    return trendingUrlArray.map((urlPath, i) => {
+      return (
+        <PressableTab
+          key={urlPath}
+          onPressTab={onPressTab}
+          tabState={trending}
+          urlPath={urlPath}
+          tabTitle={TAB_TITLES[i + 6]}
+        />
+      );
+    });
+  };
+
+  const resolveRenderedTabs = () => {
     if (moviesType === POPULAR_MOVIES) {
-      return (
-        <View style={view}>
-          <PressableTab
-            onPressTab={onPressTab}
-            tabState={popular}
-            urlPath={POPULAR_URL_PATH}
-            tabTitle={TAB_TITLES[0]}
-          />
-          <PressableTab
-            onPressTab={onPressTab}
-            tabState={popular}
-            urlPath={UPCOMING_URL_PATH}
-            tabTitle={TAB_TITLES[1]}
-          />
-          <PressableTab
-            onPressTab={onPressTab}
-            tabState={popular}
-            urlPath={POPULAR_TV_URL_PATH}
-            tabTitle={TAB_TITLES[2]}
-          />
-          <PressableTab
-            onPressTab={onPressTab}
-            tabState={popular}
-            urlPath={THEATERS_URL_PATH}
-            tabTitle={TAB_TITLES[3]}
-          />
-        </View>
-      );
+      return renderPopTabs();
     } else if (moviesType === FREE_MOVIES) {
-      return (
-        <View style={view}>
-          <PressableTab
-            onPressTab={onPressTab}
-            tabState={free}
-            urlPath={TOP_RATED_URL_PATH}
-            tabTitle={TAB_TITLES[4]}
-          />
-          <PressableTab
-            onPressTab={onPressTab}
-            tabState={free}
-            urlPath={TV_TOP_RATED_URL_PATH}
-            tabTitle={TAB_TITLES[5]}
-          />
-        </View>
-      );
+      return renderFreeTabs();
     } else {
-      return (
-        <View style={view}>
-          <PressableTab
-            onPressTab={onPressTab}
-            tabState={trending}
-            urlPath={TRENDING_DAY_URL_PATH}
-            tabTitle={TAB_TITLES[6]}
-          />
-          <PressableTab
-            onPressTab={onPressTab}
-            tabState={trending}
-            urlPath={TRENDING_WEEK_URL_PATH}
-            tabTitle={TAB_TITLES[7]}
-          />
-        </View>
-      );
+      return renderTrendTabs();
     }
+  };
+
+  const tabsToRender = () => {
+    return <View style={view}>{resolveRenderedTabs()}</View>;
   };
 
   return tabsToRender();
