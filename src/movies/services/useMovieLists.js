@@ -34,10 +34,10 @@ const useMovieLists = () => {
   }, []);
 
   const loadOnTabChange = (urlPath, moviesType) => {
-    (async function loadingData() {
-      const res = await getData(getMoviesByPathUrl(urlPath));
-      resolveStateData(res, moviesType);
-    })();
+    getDataOnChangeType(urlPath, moviesType);
+  };
+  const loadMoreOnScroll = (urlPath, moviesType) => {
+    resolveMoviesOnScroll(urlPath, moviesType);
   };
 
   const getInitialData = () => {
@@ -52,8 +52,12 @@ const useMovieLists = () => {
       });
     });
   };
+  async function getDataOnChangeType(urlPath, moviesType) {
+    const res = await getData(getMoviesByPathUrl(urlPath));
+    resolveTypeOnChange(res, moviesType);
+  }
 
-  const resolveStateData = (res, moviesType) => {
+  const resolveTypeOnChange = (res, moviesType) => {
     if (moviesType === POPULAR_MOVIES) {
       setState({
         ...movieState,
@@ -77,35 +81,38 @@ const useMovieLists = () => {
       });
     }
   };
-
-  const loadMoreOnScroll = (urlPath, moviesType) => {
+  const resolveMoviesOnScroll = (urlPath, moviesType) => {
     if (moviesType === POPULAR_MOVIES) {
-      (async function getMorePopular() {
-        const res = await getData(getMoreMoviesUrl(urlPath, nextPopularPage));
-        setState({
-          ...movieState,
-          nextPopularPage: nextPopularPage + 1,
-          popularMovies: popularMovies.concat(res.results),
-        });
-      })();
+      return getMorePopular(urlPath);
     } else if (moviesType === FREE_MOVIES) {
-      (async function getMoreFree() {
-        const res = await getData(getMoreMoviesUrl(urlPath, nextFreePage));
-        setState({
-          ...movieState,
-          nextFreePage: nextFreePage + 1,
-          freeMovies: freeMovies.concat(res.results),
-        });
-      })();
+      return getMoreFree(urlPath);
     } else {
-      (async function getMoreTrending() {
-        const res = await getData(getMoreMoviesUrl(urlPath, nextTrendingPage));
-        setState({
-          ...movieState,
-          nextTrendingPage: nextTrendingPage + 1,
-          trendingMovies: trendingMovies.concat(res.results),
-        });
-      })();
+      return getMoreTrending(urlPath);
+    }
+
+    async function getMorePopular(urlPath) {
+      const res = await getData(getMoreMoviesUrl(urlPath, nextPopularPage));
+      setState({
+        ...movieState,
+        nextPopularPage: nextPopularPage + 1,
+        popularMovies: popularMovies.concat(res.results),
+      });
+    }
+    async function getMoreFree(urlPath) {
+      const res = await getData(getMoreMoviesUrl(urlPath, nextFreePage));
+      setState({
+        ...movieState,
+        nextFreePage: nextFreePage + 1,
+        freeMovies: freeMovies.concat(res.results),
+      });
+    }
+    async function getMoreTrending(urlPath) {
+      const res = await getData(getMoreMoviesUrl(urlPath, nextTrendingPage));
+      setState({
+        ...movieState,
+        nextTrendingPage: nextTrendingPage + 1,
+        trendingMovies: trendingMovies.concat(res.results),
+      });
     }
   };
 
