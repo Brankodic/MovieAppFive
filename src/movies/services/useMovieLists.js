@@ -1,12 +1,12 @@
 import {useState, useEffect} from 'react';
+import {POPULAR_MOVIES, FREE_MOVIES} from '../../../constants.js';
 import {
-  POPULAR_MOVIES,
-  FREE_MOVIES,
-  POPULAR_URL_PATH,
-  TOP_RATED_URL_PATH,
-  TRENDING_DAY_URL_PATH,
-} from '../../../constants.js';
-import {getData, getMoreMoviesUrl, getMoviesByPathUrl} from './api';
+  getData,
+  getMoreMoviesUrl,
+  getMoviesByPathUrl,
+  getInitialMoviesData,
+  initMoviesArray,
+} from './api';
 
 const useMovieLists = () => {
   const [movieState, setState] = useState({
@@ -30,51 +30,57 @@ const useMovieLists = () => {
   } = movieState;
 
   useEffect(() => {
-    (async () => {
-      const popRes = await getData(getMoviesByPathUrl(POPULAR_URL_PATH));
-      const freeRes = await getData(getMoviesByPathUrl(TOP_RATED_URL_PATH));
-      const trendRes = await getData(getMoviesByPathUrl(TRENDING_DAY_URL_PATH));
-      setState({
-        ...movieState,
-        popularMovies: popRes.results,
-        freeMovies: freeRes.results,
-        trendingMovies: trendRes.results,
-        isLoading: false,
-      });
-    })();
+    getInitialData();
   }, []);
 
   const loadOnTabChange = (urlPath, moviesType) => {
-    (async () => {
+    (async function loadingData() {
       const res = await getData(getMoviesByPathUrl(urlPath));
-      if (moviesType === POPULAR_MOVIES) {
-        setState({
-          ...movieState,
-          nextPopularPage: 2,
-          popularMovies: res.results,
-          isLoading: false,
-        });
-      } else if (moviesType === FREE_MOVIES) {
-        setState({
-          ...movieState,
-          nextFreePage: 2,
-          freeMovies: res.results,
-          isLoading: false,
-        });
-      } else {
-        setState({
-          ...movieState,
-          nextTrendingPage: 2,
-          trendingMovies: res.results,
-          isLoading: false,
-        });
-      }
+      resolveStateData(res, moviesType);
     })();
+  };
+
+  const getInitialData = () => {
+    getInitialMoviesData().then(() => {
+      const {popMoviesData, freeMoviesData, trendMoviesData} = initMoviesArray;
+      setState({
+        ...movieState,
+        popularMovies: popMoviesData,
+        freeMovies: freeMoviesData,
+        trendingMovies: trendMoviesData,
+        isLoading: false,
+      });
+    });
+  };
+
+  const resolveStateData = (res, moviesType) => {
+    if (moviesType === POPULAR_MOVIES) {
+      setState({
+        ...movieState,
+        nextPopularPage: 2,
+        popularMovies: res.results,
+        isLoading: false,
+      });
+    } else if (moviesType === FREE_MOVIES) {
+      setState({
+        ...movieState,
+        nextFreePage: 2,
+        freeMovies: res.results,
+        isLoading: false,
+      });
+    } else {
+      setState({
+        ...movieState,
+        nextTrendingPage: 2,
+        trendingMovies: res.results,
+        isLoading: false,
+      });
+    }
   };
 
   const loadMoreOnScroll = (urlPath, moviesType) => {
     if (moviesType === POPULAR_MOVIES) {
-      (async () => {
+      (async function getMorePopular() {
         const res = await getData(getMoreMoviesUrl(urlPath, nextPopularPage));
         setState({
           ...movieState,
@@ -83,7 +89,7 @@ const useMovieLists = () => {
         });
       })();
     } else if (moviesType === FREE_MOVIES) {
-      (async () => {
+      (async function getMoreFree() {
         const res = await getData(getMoreMoviesUrl(urlPath, nextFreePage));
         setState({
           ...movieState,
@@ -92,7 +98,7 @@ const useMovieLists = () => {
         });
       })();
     } else {
-      (async () => {
+      (async function getMoreTrending() {
         const res = await getData(getMoreMoviesUrl(urlPath, nextTrendingPage));
         setState({
           ...movieState,

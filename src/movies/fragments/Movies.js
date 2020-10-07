@@ -1,18 +1,14 @@
 import React, {useState} from 'react';
 import {Text, StyleSheet} from 'react-native';
-import {
-  POPULAR_MOVIES,
-  FREE_MOVIES,
-  POPULAR_URL_PATH,
-} from '../../../constants.js';
+import {POPULAR_MOVIES, FREE_MOVIES} from '../../../constants.js';
 import {MoviesList, TabsMovies} from '../components';
 
 const POPULAR_TITLE = "What's Popular";
 const FREE_TITLE = 'Free To Watch';
-const TRENDING_TITLE = 'Trending'
+const TRENDING_TITLE = 'Trending';
 
 const Movies = (props) => {
-  const [urlPathState, setUrlPath] = useState(POPULAR_URL_PATH);
+  const [urlPathState, setUrlPath] = useState(props.initUrlPath);
   const {text} = styles;
   const {
     navigation,

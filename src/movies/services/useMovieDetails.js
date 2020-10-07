@@ -21,6 +21,10 @@ const useMovieDetails = (movieId) => {
     production: [],
   });
 
+  useEffect(() => {
+    fetchData();
+  }, []);
+
   function fetchData() {
     getSingleMovieDetails(movieId).then(() => {
       const {poster_path, release_date, original_language, genres} = movieData;
@@ -39,10 +43,6 @@ const useMovieDetails = (movieId) => {
       });
     });
   }
-
-  useEffect(() => {
-    fetchData();     //mmmm ...clean
-  }, []);
 
   return {state};
 };

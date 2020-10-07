@@ -12,6 +12,9 @@ import {
   POPULAR_MOVIES,
   FREE_MOVIES,
   TRENDING_MOVIES,
+  POPULAR_URL_PATH,
+  TOP_RATED_URL_PATH,
+  TRENDING_DAY_URL_PATH,
 } from '../../../constants.js';
 import {SearchInput, MoviesList} from '../components';
 import {Movies} from '../fragments';
@@ -70,6 +73,7 @@ const MovieListScreen = ({navigation}) => {
           <Movies
             moviesArray={popularMovies}
             moviesType={POPULAR_MOVIES}
+            initUrlPath={POPULAR_URL_PATH}
             handleTabPress={handleTabPress}
             handleOnEndReach={handleOnEndReach}
             navigation={navigation}
@@ -78,6 +82,7 @@ const MovieListScreen = ({navigation}) => {
           <Movies
             moviesArray={freeMovies}
             moviesType={FREE_MOVIES}
+            initUrlPath={TOP_RATED_URL_PATH}
             handleTabPress={handleTabPress}
             handleOnEndReach={handleOnEndReach}
             navigation={navigation}
@@ -86,6 +91,7 @@ const MovieListScreen = ({navigation}) => {
           <Movies
             moviesArray={trendingMovies}
             moviesType={TRENDING_MOVIES}
+            initUrlPath={TRENDING_DAY_URL_PATH}
             handleTabPress={handleTabPress}
             handleOnEndReach={handleOnEndReach}
             navigation={navigation}
