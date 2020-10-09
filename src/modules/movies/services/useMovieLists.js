@@ -2,10 +2,9 @@ import {useState, useEffect} from 'react';
 import {POPULAR_MOVIES, FREE_MOVIES} from '../../../constants.js';
 import {
   getData,
-  getMoreMoviesUrl,
-  getMoviesByPathUrl,
   getInitialMoviesData,
   initMoviesArray,
+  urlPathConstructor,
 } from './api';
 
 const useMovieLists = () => {
@@ -55,7 +54,7 @@ const useMovieLists = () => {
   };
 
   async function getDataOnChangeType(urlPath, moviesType) {
-    const res = await getData(getMoviesByPathUrl(urlPath));
+    const res = await getData(urlPathConstructor('movies',[urlPath,1]));
     resolveTypeOnChange(res, moviesType);
   }
 
@@ -94,7 +93,7 @@ const useMovieLists = () => {
     }
 
     async function getMorePopular(urlPath) {
-      const res = await getData(getMoreMoviesUrl(urlPath, nextPopularPage));
+      const res = await getData(urlPathConstructor('movies',[urlPath, nextPopularPage]));
       setState({
         ...movieState,
         nextPopularPage: nextPopularPage + 1,
@@ -103,7 +102,7 @@ const useMovieLists = () => {
     }
 
     async function getMoreFree(urlPath) {
-      const res = await getData(getMoreMoviesUrl(urlPath, nextFreePage));
+      const res = await getData(urlPathConstructor('movies',[urlPath, nextFreePage]));
       setState({
         ...movieState,
         nextFreePage: nextFreePage + 1,
@@ -112,7 +111,7 @@ const useMovieLists = () => {
     }
     
     async function getMoreTrending(urlPath) {
-      const res = await getData(getMoreMoviesUrl(urlPath, nextTrendingPage));
+      const res = await getData(urlPathConstructor('movies',[urlPath, nextTrendingPage]));
       setState({
         ...movieState,
         nextTrendingPage: nextTrendingPage + 1,

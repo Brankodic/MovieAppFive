@@ -15,7 +15,7 @@ import {
   POPULAR_URL_PATH,
   TOP_RATED_URL_PATH,
   TRENDING_DAY_URL_PATH,
-} from '../../../constants.js';
+} from '../../../constants';
 import {SearchInput, MoviesList} from '../components';
 import {Movies} from '../fragments';
 

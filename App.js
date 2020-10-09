@@ -3,9 +3,9 @@ import {View, StyleSheet} from 'react-native';
 import 'react-native-gesture-handler';
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
-import {screens} from './src/movies';
-import {MOVIE_LIST, MOVIE_DETAILS} from './constants';
-import {HeaderImage, HeaderBackImage} from './src/movies';
+import {screens} from './src/modules/movies';
+import {MOVIE_LIST, MOVIE_DETAILS} from './src/constants';
+import {HeaderImage, HeaderBackImage} from './src/modules/navigation/components';
 
 const Stack = createStackNavigator();
 
