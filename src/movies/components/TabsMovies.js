@@ -36,7 +36,6 @@ const TabsMovies = ({onTabPress, moviesType}) => {
     if (moviesType === POPULAR_MOVIES) setTab({popular: urlPath});
     else if (moviesType === FREE_MOVIES) setTab({free: urlPath});
     else setTab({trending: urlPath});
-
     onTabPress(urlPath, moviesType);
   };
 
@@ -53,6 +52,7 @@ const TabsMovies = ({onTabPress, moviesType}) => {
       );
     });
   };
+
   const renderFreeTabs = () => {
     return freeUrlArray.map((urlPath, i) => {
       return (
@@ -66,6 +66,7 @@ const TabsMovies = ({onTabPress, moviesType}) => {
       );
     });
   };
+  
   const renderTrendTabs = () => {
     return trendingUrlArray.map((urlPath, i) => {
       return (
@@ -80,7 +81,7 @@ const TabsMovies = ({onTabPress, moviesType}) => {
     });
   };
 
-  const resolveTabsToRender = () => {
+  const renderTabs = () => {
     if (moviesType === POPULAR_MOVIES) {
       return renderPopTabs();
     } else if (moviesType === FREE_MOVIES) {
@@ -90,7 +91,7 @@ const TabsMovies = ({onTabPress, moviesType}) => {
     }
   };
 
-  return <View style={view}>{resolveTabsToRender()}</View>;
+  return <View style={view}>{renderTabs()}</View>;
 };
 
 const styles = StyleSheet.create({

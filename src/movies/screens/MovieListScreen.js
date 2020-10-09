@@ -20,12 +20,15 @@ import {SearchInput, MoviesList} from '../components';
 import {Movies} from '../fragments';
 
 const MovieListScreen = ({navigation}) => {
-  const [searchListState, setState] = useState(false);
+  const [searchListState, setState] = useState(false); 
+  const {spinnerContainer} = styles;
+
   const {
     searchMovieState,
     handleSearchQuery,
     clearSearchMovies,
   } = useSearchMovies();
+  
   const {
     isLoading,
     popularMovies,
@@ -35,8 +38,6 @@ const MovieListScreen = ({navigation}) => {
     loadOnTabChange,
   } = useMovieLists();
 
-  const {spinnerContainer} = styles;
-
   const handleSearchScreenChange = (searchState) => {
     if (!searchListState && searchState) {
       setState(true);
@@ -45,12 +46,15 @@ const MovieListScreen = ({navigation}) => {
       setState(false);
     }
   };
+
   const handleTabPress = (urlPath, moviesType) => {
     loadOnTabChange(urlPath, moviesType);
   };
+
   const handleOnEndReach = (urlPath, moviesType) => {
     loadMoreOnScroll(urlPath, moviesType);
   };
+
   const keyHandler = (movie) => {
     return movie.id.toString() + new Date().getTime().toString();
   };

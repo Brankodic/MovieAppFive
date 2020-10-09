@@ -11,6 +11,7 @@ const SearchInput = ({setSearchActiveState, onInputValueChange}) => {
     setState(value);
     onInputValueChange(value);
   };
+
   const handlerClear = () => {
     clearSearchMovies();
     setState('');
@@ -19,6 +20,7 @@ const SearchInput = ({setSearchActiveState, onInputValueChange}) => {
   const onInputFieldClick = () => {
     setSearchActiveState(true);
   };
+  
   const onCancelClick = () => {
     setSearchActiveState(false);
   };

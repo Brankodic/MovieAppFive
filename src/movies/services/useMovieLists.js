@@ -36,6 +36,7 @@ const useMovieLists = () => {
   const loadOnTabChange = (urlPath, moviesType) => {
     getDataOnChangeType(urlPath, moviesType);
   };
+
   const loadMoreOnScroll = (urlPath, moviesType) => {
     resolveMoviesOnScroll(urlPath, moviesType);
   };
@@ -52,6 +53,7 @@ const useMovieLists = () => {
       });
     });
   };
+
   async function getDataOnChangeType(urlPath, moviesType) {
     const res = await getData(getMoviesByPathUrl(urlPath));
     resolveTypeOnChange(res, moviesType);
@@ -81,6 +83,7 @@ const useMovieLists = () => {
       });
     }
   };
+
   const resolveMoviesOnScroll = (urlPath, moviesType) => {
     if (moviesType === POPULAR_MOVIES) {
       return getMorePopular(urlPath);
@@ -98,6 +101,7 @@ const useMovieLists = () => {
         popularMovies: popularMovies.concat(res.results),
       });
     }
+
     async function getMoreFree(urlPath) {
       const res = await getData(getMoreMoviesUrl(urlPath, nextFreePage));
       setState({
@@ -106,6 +110,7 @@ const useMovieLists = () => {
         freeMovies: freeMovies.concat(res.results),
       });
     }
+    
     async function getMoreTrending(urlPath) {
       const res = await getData(getMoreMoviesUrl(urlPath, nextTrendingPage));
       setState({

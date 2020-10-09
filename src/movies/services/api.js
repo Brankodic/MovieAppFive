@@ -25,11 +25,11 @@ export const getSearchMoviesUrl = (name) => {
   return `${MAIN_URL}search/movie?api_key=${API_KEY}&language=en-US&query=${name}&page=1&include_adult=false`;
 };
 
-export let initMoviesArray = {};
-export let movieData = [];
-export let crewData = [];
-export let directorData = [];
-export let productionData = [];
+export let initMoviesArray;
+export let movieData;
+export let crewData;
+export let directorData;
+export let productionData;
 
 export async function getSingleMovieDetails(movieId) {
   let singleMovieData = [];
