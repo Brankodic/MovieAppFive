@@ -1,12 +1,6 @@
 import {useEffect, useState} from 'react';
 import _ from 'lodash';
-import {
-  getSingleMovieDetails,
-  movieData,
-  crewData,
-  directorData,
-  productionData,
-} from './api';
+import {getSingleMovieDetails} from './api';
 
 const useMovieDetails = (movieId) => {
   const [state, setState] = useState({
@@ -23,6 +17,12 @@ const useMovieDetails = (movieId) => {
 
   function fetchData() {
     getSingleMovieDetails(movieId).then(() => {
+      const {
+        movieData,
+        crewData,
+        directorData,
+        productionData,
+      } = singleMovieData;
       const {poster_path, release_date, original_language, genres} = movieData;
       const {cast} = crewData;
       setState({

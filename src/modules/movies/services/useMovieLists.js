@@ -1,11 +1,6 @@
 import {useState, useEffect} from 'react';
 import {POPULAR_MOVIES, FREE_MOVIES} from '../../../constants.js';
-import {
-  getData,
-  getInitialMoviesData,
-  initMoviesArray,
-  urlPathConstructor,
-} from './api';
+import {getData, getInitialMoviesData, urlPathConstructor} from './api';
 
 const useMovieLists = () => {
   const [movieState, setState] = useState({
@@ -42,7 +37,7 @@ const useMovieLists = () => {
 
   const getInitialData = () => {
     getInitialMoviesData().then(() => {
-      const {popMoviesData, freeMoviesData, trendMoviesData} = initMoviesArray;
+      const {popMoviesData, freeMoviesData, trendMoviesData} = initMovies;
       setState({
         ...movieState,
         popularMovies: popMoviesData,
@@ -54,7 +49,7 @@ const useMovieLists = () => {
   };
 
   async function getDataOnChangeType(urlPath, moviesType) {
-    const res = await getData(urlPathConstructor('movies',[urlPath,1]));
+    const res = await getData(urlPathConstructor('movies', [urlPath, 1]));
     resolveTypeOnChange(res, moviesType);
   }
 
@@ -93,7 +88,9 @@ const useMovieLists = () => {
     }
 
     async function getMorePopular(urlPath) {
-      const res = await getData(urlPathConstructor('movies',[urlPath, nextPopularPage]));
+      const res = await getData(
+        urlPathConstructor('movies', [urlPath, nextPopularPage]),
+      );
       setState({
         ...movieState,
         nextPopularPage: nextPopularPage + 1,
@@ -102,16 +99,20 @@ const useMovieLists = () => {
     }
 
     async function getMoreFree(urlPath) {
-      const res = await getData(urlPathConstructor('movies',[urlPath, nextFreePage]));
+      const res = await getData(
+        urlPathConstructor('movies', [urlPath, nextFreePage]),
+      );
       setState({
         ...movieState,
         nextFreePage: nextFreePage + 1,
         freeMovies: freeMovies.concat(res.results),
       });
     }
-    
+
     async function getMoreTrending(urlPath) {
-      const res = await getData(urlPathConstructor('movies',[urlPath, nextTrendingPage]));
+      const res = await getData(
+        urlPathConstructor('movies', [urlPath, nextTrendingPage]),
+      );
       setState({
         ...movieState,
         nextTrendingPage: nextTrendingPage + 1,
