@@ -7,7 +7,7 @@ import {
   ScrollView,
 } from 'react-native';
 import useSearchMovies from '../services/useSearchMovies';
-import useMovieLists from '../services/useMovieLists';
+import {useFreeMovies, usePopMovies, useTrendMovies} from '../services';
 import {
   POPULAR_MOVIES,
   FREE_MOVIES,
@@ -20,7 +20,7 @@ import {SearchInput, MoviesList} from '../components';
 import {Movies} from '../fragments';
 
 const MovieListScreen = ({navigation}) => {
-  const [searchListState, setState] = useState(false); 
+  const [searchListState, setState] = useState(false);
   const {spinnerContainer} = styles;
 
   const {
@@ -28,15 +28,23 @@ const MovieListScreen = ({navigation}) => {
     handleSearchQuery,
     clearSearchMovies,
   } = useSearchMovies();
-  
+
   const {
     isLoading,
-    popularMovies,
+    popMovies,
+    loadPopOnTabChange,
+    loadPopOnScroll,
+  } = usePopMovies();
+  const {
     freeMovies,
-    trendingMovies,
-    loadMoreOnScroll,
-    loadOnTabChange,
-  } = useMovieLists();
+    loadFreeOnTabChange,
+    loadFreeOnScroll,
+  } = useFreeMovies();
+  const {
+    trendMovies,
+    loadTrendOnTabChange,
+    loadTrendOnScroll,
+  } = useTrendMovies();
 
   const handleSearchScreenChange = (searchState) => {
     if (!searchListState && searchState) {
@@ -48,11 +56,23 @@ const MovieListScreen = ({navigation}) => {
   };
 
   const handleTabPress = (urlPath, moviesType) => {
-    loadOnTabChange(urlPath, moviesType);
+    if (moviesType === POPULAR_MOVIES) {
+      loadPopOnTabChange(urlPath);
+    } else if (moviesType === FREE_MOVIES) {
+      loadFreeOnTabChange(urlPath);
+    } else {
+      loadTrendOnTabChange(urlPath);
+    }
   };
 
   const handleOnEndReach = (urlPath, moviesType) => {
-    loadMoreOnScroll(urlPath, moviesType);
+    if (moviesType === POPULAR_MOVIES) {
+      loadPopOnScroll(urlPath);
+    } else if (moviesType === FREE_MOVIES) {
+      loadFreeOnScroll(urlPath);
+    } else {
+      loadTrendOnScroll(urlPath);
+    }
   };
 
   const keyHandler = (movie) => {
@@ -75,7 +95,7 @@ const MovieListScreen = ({navigation}) => {
       return (
         <ScrollView>
           <Movies
-            moviesArray={popularMovies}
+            moviesArray={popMovies}
             moviesType={POPULAR_MOVIES}
             initUrlPath={POPULAR_URL_PATH}
             handleTabPress={handleTabPress}
@@ -93,7 +113,7 @@ const MovieListScreen = ({navigation}) => {
             keyHandler={keyHandler}
           />
           <Movies
-            moviesArray={trendingMovies}
+            moviesArray={trendMovies}
             moviesType={TRENDING_MOVIES}
             initUrlPath={TRENDING_DAY_URL_PATH}
             handleTabPress={handleTabPress}

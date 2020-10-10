@@ -1,6 +1,6 @@
 import {useState} from 'react';
 import {debounce} from 'lodash';
-import {getData, getSearchMoviesUrl} from './api';
+import {getData, urlPathConstructor} from './api';
 
 const usePopularMovies = () => {
   const [searchMovieState, setState] = useState([]);
@@ -22,7 +22,7 @@ const usePopularMovies = () => {
 
   const loadSearchMovies = (value) => {
     (async () => {
-      const res = await getData(getSearchMoviesUrl(value));
+      const res = await getData(urlPathConstructor('searchMovies', value));
       setState(res.results.slice(0, 60));
     })();
   };
