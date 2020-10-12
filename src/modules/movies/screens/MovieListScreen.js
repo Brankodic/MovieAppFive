@@ -23,7 +23,7 @@ const MovieListScreen = ({navigation}) => {
   } = useSearchMovies();
 
   const {
-    isLoading,
+    isLoading,  //loading spinner is WIP, will set it up after im done with all screens.
     popMovies,
     loadPopOnTabChange,
     loadPopOnScroll,

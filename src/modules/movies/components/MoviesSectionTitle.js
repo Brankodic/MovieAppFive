@@ -1,10 +1,18 @@
 import React from 'react';
 import {Text, StyleSheet} from 'react-native';
+import {MOVIES} from '../../../constants';
 
-const MoviesSectionTitle = ({title}) => {
+const MoviesSectionTitle = ({type}) => {
   const {text} = styles;
+  const {POPULAR_MOVIES, FREE_MOVIES, TRENDING_MOVIES} = MOVIES;
 
-  return <Text style={text}>{title}</Text>;
+  const renderedHeader = () => {
+    if (type === POPULAR_MOVIES.key) return POPULAR_MOVIES.title;
+    else if (type === FREE_MOVIES.key) return FREE_MOVIES.title;
+    else return TRENDING_MOVIES.title;
+  };
+
+  return <Text style={text}>{renderedHeader()}</Text>;
 };
 
 const styles = StyleSheet.create({
