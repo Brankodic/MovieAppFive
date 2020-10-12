@@ -1,5 +1,4 @@
 import React, {useState} from 'react';
-import {Text} from 'react-native';
 import {MOVIES} from '../../../constants.js';
 import {MoviesList, TabsMovies, MoviesSectionTitle} from '../components';
 
