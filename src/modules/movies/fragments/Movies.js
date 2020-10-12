@@ -1,11 +1,10 @@
 import React, {useState} from 'react';
-import {Text, StyleSheet} from 'react-native';
+import {Text} from 'react-native';
 import {MOVIES} from '../../../constants.js';
-import {MoviesList, TabsMovies} from '../components';
+import {MoviesList, TabsMovies, MoviesSectionTitle} from '../components';
 
 const Movies = (props) => {
   const [tabState, setTabState] = useState('');
-  const {text} = styles;
   const {
     navigation,
     keyHandler,
@@ -29,7 +28,7 @@ const Movies = (props) => {
 
   return (
     <>
-      <Text style={text}>{renderedHeader()}</Text>
+      <MoviesSectionTitle title={renderedHeader()} />
       <TabsMovies moviesType={moviesType} onTabPress={onTabPress} />
       <MoviesList
         onEndReach={handleOnEndReach}
@@ -42,16 +41,5 @@ const Movies = (props) => {
     </>
   );
 };
-
-const styles = StyleSheet.create({
-  text: {
-    backgroundColor: '#fff',
-    color: '#0B253F',
-    fontSize: 20,
-    fontWeight: 'bold',
-    margin: 5,
-    marginLeft: 15,
-  },
-});
 
 export default Movies;

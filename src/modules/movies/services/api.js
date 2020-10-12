@@ -4,20 +4,26 @@ import {MOVIES} from '../../../constants';
 
 const API_KEY = Config.API_KEY;
 const MAIN_URL = 'https://api.themoviedb.org/3/';
+const SINGLE_MOVIE = {
+  title: 'singleMovie',
+  url: '/credits',
+  jobs: ['Director', 'Production'],
+};
+const MOVIES_STRING = 'movies';
+const {title, url, jobs} = SINGLE_MOVIE;
 const {POPULAR_MOVIES, FREE_MOVIES, TRENDING_MOVIES} = MOVIES;
 
 export const urlPathConstructor = (reqType, specPath) => {
   let urlPath;
   switch (reqType) {
     case 'movies':
-      urlPath = `${MAIN_URL}${specPath[0]}?api_key=${API_KEY}&language=en-US&page=${specPath[1]}`; // specPath [1] = apiMoviePage
+      urlPath = `${MAIN_URL}${specPath[0]}?api_key=${API_KEY}&language=en-US&page=${specPath[1]}`;
       break;
     case 'singleMovie':
-      urlPath = `${MAIN_URL}movie/${specPath}?api_key=${API_KEY}`; // specPath = movieId + /credits?  , add path for TV
+      urlPath = `${MAIN_URL}movie/${specPath}?api_key=${API_KEY}`;
       break;
     case 'searchMovies':
-      urlPath = `${MAIN_URL}search/movie?api_key=${API_KEY}&language=en-US&query=${specPath}&page=1&include_adult=false`; //specPath = name
-      break;
+      urlPath = `${MAIN_URL}search/movie?api_key=${API_KEY}&language=en-US&query=${specPath}&page=1&include_adult=false`;
   }
   return urlPath;
 };
@@ -25,41 +31,41 @@ export const urlPathConstructor = (reqType, specPath) => {
 export function getSingleMovieDetails(movieId) {
   let data = [];
   return Promise.all([
-    getData(urlPathConstructor('singleMovie', movieId)),
-    getData(urlPathConstructor('singleMovie', movieId + '/credits')), //make it cleaner
-  ]).then((responses) => {
-    return Promise.all(
+    getData(urlPathConstructor(title, movieId)),
+    getData(urlPathConstructor(title, movieId + url)),
+  ])
+    .then((responses) => {
       responses.map((res) => {
         data.push(res);
-      }),
-    ).then(() => {
+      });
+    })
+    .then(() => {
       return (singleMovieData = {
         movieData: data[0],
         crewData: data[1],
         directorData: _.filter(data[1].crew, (crewMember) => {
-          return crewMember.job === 'Director';
+          return crewMember.job === jobs[0];
         }),
         productionData: _.filter(data[1].crew, (crewMember) => {
-          return crewMember.department === 'Production';
+          return crewMember.department === jobs[1];
         }),
       });
     });
-  });
 }
 
 export function getInitialMoviesData() {
   let data = [];
   return Promise.all([
-    getData(urlPathConstructor('movies', [POPULAR_MOVIES.tabs[0].url, 1])),
-    getData(urlPathConstructor('movies', [FREE_MOVIES.tabs[0].url, 1])),
-    getData(urlPathConstructor('movies', [TRENDING_MOVIES.tabs[0].url, 1])), //make it cleaner
+    getData(urlPathConstructor(MOVIES_STRING, [POPULAR_MOVIES.tabs[0].url, 1])),
+    getData(urlPathConstructor(MOVIES_STRING, [FREE_MOVIES.tabs[0].url, 1])),
+    getData(
+      urlPathConstructor(MOVIES_STRING, [TRENDING_MOVIES.tabs[0].url, 1]),
+    ),
   ])
     .then((responses) => {
-      return Promise.all(
-        responses.map((res) => {
-          data.push(res);
-        }),
-      );
+      responses.map((res) => {
+        data.push(res);
+      });
     })
     .then(() => {
       return (initMovies = {
