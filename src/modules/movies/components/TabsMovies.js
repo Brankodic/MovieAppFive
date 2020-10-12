@@ -1,90 +1,69 @@
 import React, {useState} from 'react';
 import {View, StyleSheet} from 'react-native';
-import {
-  POPULAR_MOVIES,
-  FREE_MOVIES,
-  POPULAR_URL_PATH,
-  TOP_RATED_URL_PATH,
-  TRENDING_DAY_URL_PATH,
-  popularUrlArray,
-  freeUrlArray,
-  trendingUrlArray,
-} from '../../../constants.js';
+import {MOVIES} from '../../../constants.js';
 import PressableTab from './PressableTab';
 
-const TAB_TITLES = [
-  'Popular',
-  'Upcoming',
-  'On TV',
-  'In Theaters',
-  'Movies',
-  'TV',
-  'Today',
-  'This Week',
-];
-
 const TabsMovies = ({onTabPress, moviesType}) => {
+  const {POPULAR_MOVIES, FREE_MOVIES, TRENDING_MOVIES} = MOVIES;
+
   const [tabState, setTab] = useState({
-    popular: POPULAR_URL_PATH,
-    free: TOP_RATED_URL_PATH,
-    trending: TRENDING_DAY_URL_PATH,
+    popular: POPULAR_MOVIES.tabs[0].title,
+    free: FREE_MOVIES.tabs[0].title,
+    trending: TRENDING_MOVIES.tabs[0].title,
   });
   const {popular, free, trending} = tabState;
   const {view} = styles;
 
-  const onPressTab = (urlPath) => {
-    if (moviesType === POPULAR_MOVIES) setTab({popular: urlPath});
-    else if (moviesType === FREE_MOVIES) setTab({free: urlPath});
-    else setTab({trending: urlPath});
-    onTabPress(urlPath, moviesType);
+  const onPressTab = (tabTitle) => {
+    if (moviesType === POPULAR_MOVIES.key) setTab({popular: tabTitle});
+    else if (moviesType === FREE_MOVIES.key) setTab({free: tabTitle});
+    else setTab({trending: tabTitle});
+    onTabPress(tabTitle, moviesType);
   };
 
   const renderPopTabs = () => {
-    return popularUrlArray.map((urlPath, i) => {
+    return POPULAR_MOVIES.tabs.map((tab) => {
       return (
         <PressableTab
-          key={urlPath}
+          key={tab.title}
           onPressTab={onPressTab}
           tabState={popular}
-          urlPath={urlPath}
-          tabTitle={TAB_TITLES[i]}
+          tabTitle={tab.title}
         />
       );
     });
   };
 
   const renderFreeTabs = () => {
-    return freeUrlArray.map((urlPath, i) => {
+    return FREE_MOVIES.tabs.map((tab) => {
       return (
         <PressableTab
-          key={urlPath}
+          key={tab.title}
           onPressTab={onPressTab}
           tabState={free}
-          urlPath={urlPath}
-          tabTitle={TAB_TITLES[i + 4]}
+          tabTitle={tab.title}
         />
       );
     });
   };
-  
+
   const renderTrendTabs = () => {
-    return trendingUrlArray.map((urlPath, i) => {
+    return TRENDING_MOVIES.tabs.map((tab) => {
       return (
         <PressableTab
-          key={urlPath}
+          key={tab.title}
           onPressTab={onPressTab}
           tabState={trending}
-          urlPath={urlPath}
-          tabTitle={TAB_TITLES[i + 6]}
+          tabTitle={tab.title}
         />
       );
     });
   };
 
   const renderTabs = () => {
-    if (moviesType === POPULAR_MOVIES) {
+    if (moviesType === POPULAR_MOVIES.key) {
       return renderPopTabs();
-    } else if (moviesType === FREE_MOVIES) {
+    } else if (moviesType === FREE_MOVIES.key) {
       return renderFreeTabs();
     } else {
       return renderTrendTabs();

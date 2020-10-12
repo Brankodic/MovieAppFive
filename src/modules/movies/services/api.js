@@ -1,13 +1,10 @@
 import Config from 'react-native-config';
 import _ from 'lodash';
-import {
-  POPULAR_URL_PATH,
-  TOP_RATED_URL_PATH,
-  TRENDING_DAY_URL_PATH,
-} from '../../../constants';
+import {MOVIES} from '../../../constants';
 
 const API_KEY = Config.API_KEY;
 const MAIN_URL = 'https://api.themoviedb.org/3/';
+const {POPULAR_MOVIES, FREE_MOVIES, TRENDING_MOVIES} = MOVIES;
 
 export const urlPathConstructor = (reqType, specPath) => {
   let urlPath;
@@ -53,9 +50,9 @@ export function getSingleMovieDetails(movieId) {
 export function getInitialMoviesData() {
   let data = [];
   return Promise.all([
-    getData(urlPathConstructor('movies', [POPULAR_URL_PATH, 1])),
-    getData(urlPathConstructor('movies', [TOP_RATED_URL_PATH, 1])),
-    getData(urlPathConstructor('movies', [TRENDING_DAY_URL_PATH, 1])), //make it cleaner
+    getData(urlPathConstructor('movies', [POPULAR_MOVIES.tabs[0].url, 1])),
+    getData(urlPathConstructor('movies', [FREE_MOVIES.tabs[0].url, 1])),
+    getData(urlPathConstructor('movies', [TRENDING_MOVIES.tabs[0].url, 1])), //make it cleaner
   ])
     .then((responses) => {
       return Promise.all(

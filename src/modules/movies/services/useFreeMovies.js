@@ -1,5 +1,6 @@
 import {useState, useEffect} from 'react';
 import {getData, getInitialMoviesData, urlPathConstructor} from './api';
+import {MOVIES} from '../../../constants';
 
 const useFreeMovies = () => {
   const [freeMoviesState, setState] = useState({
@@ -8,7 +9,8 @@ const useFreeMovies = () => {
     freeMovies: [],
   });
 
-  const {isLoading, freeMovies, nextFreePage} = freeMoviesState;
+  const {FREE_MOVIES} = MOVIES;
+  const {isLoading, freeMovies, nextFreePage, urlFreePath} = freeMoviesState;
 
   const getInitialData = () => {
     getInitialMoviesData().then(() => {
@@ -17,6 +19,7 @@ const useFreeMovies = () => {
         ...freeMoviesState,
         freeMovies: freeMoviesData,
         isLoading: false,
+        urlFreePath: FREE_MOVIES.tabs[0].url,
       });
     });
   };
@@ -24,33 +27,36 @@ const useFreeMovies = () => {
     getInitialData();
   }, []);
 
-  async function getDataOnChangeType(urlPath) {
-    return getData(urlPathConstructor('movies', [urlPath, 1])).then((res) => {
-      setState({
-        ...freeMoviesState,
-        nextFreePage: 2,
-        freeMovies: res.results,
-        isLoading: false,
-      });
+  const getDataOnChangeType = (tabTitle) => {
+    FREE_MOVIES.tabs.map((item) => {
+      if (item.title === tabTitle)
+        return getData(urlPathConstructor('movies', [item.url, 1])).then(
+          (res) => {
+            setState({
+              ...freeMoviesState,
+              nextFreePage: 2,
+              freeMovies: res.results,
+              isLoading: false,
+              urlFreePath: item.url,
+            });
+          },
+        );
     });
-  }
-  const loadFreeOnTabChange = (urlPath, moviesType) => {
-    getDataOnChangeType(urlPath, moviesType);
+  };
+  const loadFreeOnTabChange = (tabTitle) => {
+    getDataOnChangeType(tabTitle);
   };
 
-  async function getMoreFree(urlPath) {
-    return getData(urlPathConstructor('movies', [urlPath, nextFreePage])).then(
-      (res) => {
-        setState({
-          ...freeMoviesState,
-          nextFreePage: nextFreePage + 1,
-          freeMovies: freeMovies.concat(res.results),
-        });
-      },
-    );
-  }
-  const loadFreeOnScroll = (urlPath) => {
-    getMoreFree(urlPath);
+  const loadFreeOnScroll = () => {
+    return getData(
+      urlPathConstructor('movies', [urlFreePath, nextFreePage]),
+    ).then((res) => {
+      setState({
+        ...freeMoviesState,
+        nextFreePage: nextFreePage + 1,
+        freeMovies: freeMovies.concat(res.results),
+      });
+    });
   };
 
   return {

@@ -7,9 +7,9 @@ const MoviesList = (props) => {
   const {
     keyHandler,
     movies,
+    tabState,
     onEndReach,
     navigation,
-    urlPath,
     moviesType,
   } = props;
 
@@ -18,7 +18,7 @@ const MoviesList = (props) => {
       offset: 0,
       animated: true,
     });
-  }, [urlPath]);
+  }, [tabState]);
 
   return (
     <View>
@@ -28,7 +28,7 @@ const MoviesList = (props) => {
         }}
         contentContainerStyle={movieContainer}
         horizontal
-        onEndReached={() => onEndReach(urlPath, moviesType)}
+        onEndReached={() => onEndReach(moviesType)}
         data={movies}
         keyExtractor={keyHandler}
         renderItem={(movie) => {

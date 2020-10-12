@@ -1,14 +1,10 @@
 import React, {useState} from 'react';
 import {Text, StyleSheet} from 'react-native';
-import {POPULAR_MOVIES, FREE_MOVIES} from '../../../constants.js';
+import {MOVIES} from '../../../constants.js';
 import {MoviesList, TabsMovies} from '../components';
 
-const POPULAR_TITLE = "What's Popular";
-const FREE_TITLE = 'Free To Watch';
-const TRENDING_TITLE = 'Trending';
-
 const Movies = (props) => {
-  const [urlPathState, setUrlPath] = useState(props.initUrlPath);
+  const [tabState, setTabState] = useState('');
   const {text} = styles;
   const {
     navigation,
@@ -18,16 +14,17 @@ const Movies = (props) => {
     handleTabPress,
     handleOnEndReach,
   } = props;
+  const {POPULAR_MOVIES, FREE_MOVIES, TRENDING_MOVIES} = MOVIES;
 
-  const renderedHeader = () => {
-    if (moviesType === POPULAR_MOVIES) return POPULAR_TITLE;
-    else if (moviesType === FREE_MOVIES) return FREE_TITLE;
-    else return TRENDING_TITLE;
+  const onTabPress = (tabTitle, moviesType) => {
+    handleTabPress(tabTitle, moviesType);
+    setTabState(tabTitle);
   };
 
-  const onTabPress = (urlPath, moviesType) => {
-    handleTabPress(urlPath, moviesType);
-    setUrlPath(urlPath);
+  const renderedHeader = () => {
+    if (moviesType === POPULAR_MOVIES.key) return POPULAR_MOVIES.title;
+    else if (moviesType === FREE_MOVIES.key) return FREE_MOVIES.title;
+    else return TRENDING_MOVIES.title;
   };
 
   return (
@@ -36,8 +33,8 @@ const Movies = (props) => {
       <TabsMovies moviesType={moviesType} onTabPress={onTabPress} />
       <MoviesList
         onEndReach={handleOnEndReach}
+        tabState={tabState}
         keyHandler={keyHandler}
-        urlPath={urlPathState}
         moviesType={moviesType}
         movies={moviesArray}
         navigation={navigation}

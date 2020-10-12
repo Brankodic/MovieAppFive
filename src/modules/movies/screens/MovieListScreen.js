@@ -8,21 +8,14 @@ import {
 } from 'react-native';
 import useSearchMovies from '../services/useSearchMovies';
 import {useFreeMovies, usePopMovies, useTrendMovies} from '../services';
-import {
-  POPULAR_MOVIES,
-  FREE_MOVIES,
-  TRENDING_MOVIES,
-  POPULAR_URL_PATH,
-  TOP_RATED_URL_PATH,
-  TRENDING_DAY_URL_PATH,
-} from '../../../constants';
+import {MOVIES} from '../../../constants';
 import {SearchInput, MoviesList} from '../components';
 import {Movies} from '../fragments';
 
 const MovieListScreen = ({navigation}) => {
   const [searchListState, setState] = useState(false);
   const {spinnerContainer} = styles;
-
+  const {POPULAR_MOVIES, FREE_MOVIES, TRENDING_MOVIES} = MOVIES;
   const {
     searchMovieState,
     handleSearchQuery,
@@ -35,11 +28,7 @@ const MovieListScreen = ({navigation}) => {
     loadPopOnTabChange,
     loadPopOnScroll,
   } = usePopMovies();
-  const {
-    freeMovies,
-    loadFreeOnTabChange,
-    loadFreeOnScroll,
-  } = useFreeMovies();
+  const {freeMovies, loadFreeOnTabChange, loadFreeOnScroll} = useFreeMovies();
   const {
     trendMovies,
     loadTrendOnTabChange,
@@ -55,23 +44,23 @@ const MovieListScreen = ({navigation}) => {
     }
   };
 
-  const handleTabPress = (urlPath, moviesType) => {
-    if (moviesType === POPULAR_MOVIES) {
-      loadPopOnTabChange(urlPath);
-    } else if (moviesType === FREE_MOVIES) {
-      loadFreeOnTabChange(urlPath);
+  const handleTabPress = (tabTitle, moviesType) => {
+    if (moviesType === POPULAR_MOVIES.key) {
+      loadPopOnTabChange(tabTitle);
+    } else if (moviesType === FREE_MOVIES.key) {
+      loadFreeOnTabChange(tabTitle);
     } else {
-      loadTrendOnTabChange(urlPath);
+      loadTrendOnTabChange(tabTitle);
     }
   };
 
-  const handleOnEndReach = (urlPath, moviesType) => {
-    if (moviesType === POPULAR_MOVIES) {
-      loadPopOnScroll(urlPath);
-    } else if (moviesType === FREE_MOVIES) {
-      loadFreeOnScroll(urlPath);
+  const handleOnEndReach = (moviesType) => {
+    if (moviesType === POPULAR_MOVIES.key) {
+      loadPopOnScroll();
+    } else if (moviesType === FREE_MOVIES.key) {
+      loadFreeOnScroll();
     } else {
-      loadTrendOnScroll(urlPath);
+      loadTrendOnScroll();
     }
   };
 
@@ -96,8 +85,7 @@ const MovieListScreen = ({navigation}) => {
         <ScrollView>
           <Movies
             moviesArray={popMovies}
-            moviesType={POPULAR_MOVIES}
-            initUrlPath={POPULAR_URL_PATH}
+            moviesType={POPULAR_MOVIES.key}
             handleTabPress={handleTabPress}
             handleOnEndReach={handleOnEndReach}
             navigation={navigation}
@@ -105,8 +93,7 @@ const MovieListScreen = ({navigation}) => {
           />
           <Movies
             moviesArray={freeMovies}
-            moviesType={FREE_MOVIES}
-            initUrlPath={TOP_RATED_URL_PATH}
+            moviesType={FREE_MOVIES.key}
             handleTabPress={handleTabPress}
             handleOnEndReach={handleOnEndReach}
             navigation={navigation}
@@ -114,8 +101,7 @@ const MovieListScreen = ({navigation}) => {
           />
           <Movies
             moviesArray={trendMovies}
-            moviesType={TRENDING_MOVIES}
-            initUrlPath={TRENDING_DAY_URL_PATH}
+            moviesType={TRENDING_MOVIES.key}
             handleTabPress={handleTabPress}
             handleOnEndReach={handleOnEndReach}
             navigation={navigation}

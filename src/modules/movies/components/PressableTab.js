@@ -2,12 +2,12 @@ import React from 'react';
 import {Pressable, Text, StyleSheet} from 'react-native';
 
 const PressableTab = (props) => {
-  const {onPressTab, tabState, urlPath, tabTitle} = props;
+  const {onPressTab, tabState, tabTitle} = props;
   const {btn, btnPressed} = styles;
 
   return (
-    <Pressable onPress={() => onPressTab(urlPath)}>
-      <Text style={[tabState === urlPath ? btnPressed : btn]}>{tabTitle}</Text>
+    <Pressable onPress={() => onPressTab(tabTitle)}>
+      <Text style={[tabState === tabTitle ? btnPressed : btn]}>{tabTitle}</Text>
     </Pressable>
   );
 };

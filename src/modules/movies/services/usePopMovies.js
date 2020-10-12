@@ -1,5 +1,6 @@
 import {useState, useEffect} from 'react';
 import {getData, getInitialMoviesData, urlPathConstructor} from './api';
+import {MOVIES} from '../../../constants';
 
 const usePopMovies = () => {
   const [popMoviesState, setState] = useState({
@@ -8,7 +9,8 @@ const usePopMovies = () => {
     popMovies: [],
   });
 
-  const {isLoading, popMovies, nextPopPage} = popMoviesState;
+  const {POPULAR_MOVIES} = MOVIES;
+  const {isLoading, popMovies, nextPopPage, urlPopPath} = popMoviesState;
 
   const getInitialData = () => {
     getInitialMoviesData().then(() => {
@@ -17,6 +19,7 @@ const usePopMovies = () => {
         ...popMoviesState,
         popMovies: popMoviesData,
         isLoading: false,
+        urlPopPath: POPULAR_MOVIES.tabs[0].url,
       });
     });
   };
@@ -24,23 +27,29 @@ const usePopMovies = () => {
     getInitialData();
   }, []);
 
-  async function getDataOnChangeType(urlPath) {
-    return getData(urlPathConstructor('movies', [urlPath, 1])).then((res) => {
-      setState({
-        ...popMoviesState,
-        nextPopPage: 2,
-        popMovies: res.results,
-        isLoading: false,
-      });
+  const getDataOnChangeType = (tabTitle) => {
+    POPULAR_MOVIES.tabs.map((item) => {
+      if (item.title === tabTitle)
+        return getData(urlPathConstructor('movies', [item.url, 1])).then(
+          (res) => {
+            setState({
+              ...popMoviesState,
+              nextPopPage: 2,
+              popMovies: res.results,
+              isLoading: false,
+              urlPopPath: item.url,
+            });
+          },
+        );
     });
-  }
-  const loadPopOnTabChange = (urlPath) => {
-    getDataOnChangeType(urlPath);
+  };
+  const loadPopOnTabChange = (tabTitle) => {
+    getDataOnChangeType(tabTitle);
   };
 
-  async function getMorePopular(urlPath) {
+  const loadPopOnScroll = () => {
     return getData(
-      urlPathConstructor('movies', [urlPath, nextPopPage]),
+      urlPathConstructor('movies', [urlPopPath, nextPopPage]),
     ).then((res) => {
       setState({
         ...popMoviesState,
@@ -48,9 +57,6 @@ const usePopMovies = () => {
         popMovies: popMovies.concat(res.results),
       });
     });
-  }
-  const loadPopOnScroll = (urlPath) => {
-    getMorePopular(urlPath);
   };
 
   return {
