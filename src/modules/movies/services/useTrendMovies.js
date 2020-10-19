@@ -33,7 +33,7 @@ const useTrendMovies = () => {
             setState({
               ...trendMoviesState,
               nextPage: 2,
-              trendMovies: res.results,
+              movies: res.results,
               isLoading: false,
               urlPath: item.url,
             });
@@ -48,7 +48,7 @@ const useTrendMovies = () => {
         setState({
           ...trendMoviesState,
           nextPage: nextPage + 1,
-          mvies: movies.concat(res.results),
+          movies: movies.concat(res.results),
         });
       },
     );
