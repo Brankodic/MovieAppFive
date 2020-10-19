@@ -1,70 +1,61 @@
 import {useState, useEffect} from 'react';
 import {getData, getInitialMoviesData, urlPathConstructor} from './api';
-import {MOVIES} from '../../../constants';
+import {MOVIES, MOVIES_STRING} from '../../../constants';
 
 const useTrendMovies = () => {
   const [trendMoviesState, setState] = useState({
     isLoading: true,
-    nextTrendPage: 2,
-    trendMovies: [],
+    nextPage: 2,
+    movies: [],
   });
   const {TRENDING_MOVIES} = MOVIES;
-  const {
-    isLoading,
-    trendMovies,
-    nextTrendPage,
-    urlTrendPath,
-  } = trendMoviesState;
+  const {isLoading, movies, nextPage, urlPath} = trendMoviesState;
 
-  const getInitialData = () => {
-    getInitialMoviesData().then(() => {
-      const {trendMoviesData} = initMovies;
+  const getInitialData = () =>
+    getInitialMoviesData().then((props) => {
+      const {trendMovies} = props;
       setState({
         ...trendMoviesState,
-        trendMovies: trendMoviesData,
+        movies: trendMovies,
         isLoading: false,
-        urlTrendPath: TRENDING_MOVIES.tabs[0].url,
+        urlPath: TRENDING_MOVIES.tabs[0].url,
       });
     });
-  };
   useEffect(() => {
     getInitialData();
   }, []);
 
-  const getDataOnChangeType = (tabTitle) => {
+  const getDataOnChangeType = (tabTitle) =>
     TRENDING_MOVIES.tabs.map((item) => {
       if (item.title === tabTitle)
-        return getData(urlPathConstructor('movies', [item.url, 1])).then(
+        return getData(urlPathConstructor(MOVIES_STRING, [item.url, 1])).then(
           (res) => {
             setState({
               ...trendMoviesState,
-              nextTrendPage: 2,
+              nextPage: 2,
               trendMovies: res.results,
               isLoading: false,
-              urlTrendPath: item.url,
+              urlPath: item.url,
             });
           },
         );
     });
-  };
-  const loadTrendOnTabChange = (tabTitle) => {
-    getDataOnChangeType(tabTitle);
-  };
+  const loadTrendOnTabChange = (tabTitle) => getDataOnChangeType(tabTitle);
 
   const loadTrendOnScroll = () => {
-    return getData(
-      urlPathConstructor('movies', [urlTrendPath, nextTrendPage]),
-    ).then((res) => {
-      setState({
-        ...trendMoviesState,
-        nextTrendPage: nextTrendPage + 1,
-        trendMovies: trendMovies.concat(res.results),
-      });
-    });
+    return getData(urlPathConstructor(MOVIES_STRING, [urlPath, nextPage])).then(
+      (res) => {
+        setState({
+          ...trendMoviesState,
+          nextPage: nextPage + 1,
+          mvies: movies.concat(res.results),
+        });
+      },
+    );
   };
 
   return {
-    trendMovies,
+    movies,
     isLoading,
     loadTrendOnTabChange,
     loadTrendOnScroll,

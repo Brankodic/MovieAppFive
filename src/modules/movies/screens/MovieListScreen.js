@@ -23,14 +23,18 @@ const MovieListScreen = ({navigation}) => {
   } = useSearchMovies();
 
   const {
-    isLoading,  //loading spinner is WIP, will set it up after im done with all screens.
-    popMovies,
+    isLoading, //loading spinner is WIP, will set it up after im done with all screens.
+    movies: popMovies,
     loadPopOnTabChange,
     loadPopOnScroll,
   } = usePopMovies();
-  const {freeMovies, loadFreeOnTabChange, loadFreeOnScroll} = useFreeMovies();
   const {
-    trendMovies,
+    movies: freeMovies,
+    loadFreeOnTabChange,
+    loadFreeOnScroll,
+  } = useFreeMovies();
+  const {
+    movies: trendMovies,
     loadTrendOnTabChange,
     loadTrendOnScroll,
   } = useTrendMovies();
@@ -69,10 +73,7 @@ const MovieListScreen = ({navigation}) => {
       return (
         <>
           <Text style={styles.text}>Search Results</Text>
-          <MoviesList
-            movies={searchMovieState}
-            navigation={navigation}
-          />
+          <MoviesList movies={searchMovieState} navigation={navigation} />
         </>
       );
     } else {
@@ -110,7 +111,7 @@ const MovieListScreen = ({navigation}) => {
         <ActivityIndicator animating={isLoading} size="large" color="#aaa" />
       </View>
       <SearchInput
-        onSearchScreenChange ={handleSearchScreenChange}
+        onSearchScreenChange={handleSearchScreenChange}
         onInputValueChange={handleSearchQuery}
       />
       {renderLists()}

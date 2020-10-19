@@ -16,13 +16,8 @@ const useMovieDetails = (movieId) => {
   });
 
   function fetchData() {
-    getSingleMovieDetails(movieId).then(() => {
-      const {
-        movieData,
-        crewData,
-        directorData,
-        productionData,
-      } = singleMovieData;
+    getSingleMovieDetails(movieId).then((props) => {
+      const {movieData, crewData, directorData, productionData} = props;
       const {poster_path, release_date, original_language, genres} = movieData;
       const {cast} = crewData;
       setState({

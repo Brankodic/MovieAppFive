@@ -1,66 +1,62 @@
 import {useState, useEffect} from 'react';
 import {getData, getInitialMoviesData, urlPathConstructor} from './api';
-import {MOVIES} from '../../../constants';
+import {MOVIES, MOVIES_STRING} from '../../../constants';
 
 const usePopMovies = () => {
   const [popMoviesState, setState] = useState({
     isLoading: true,
-    nextPopPage: 2,
-    popMovies: [],
+    nextPage: 2,
+    movies: [],
   });
 
   const {POPULAR_MOVIES} = MOVIES;
-  const {isLoading, popMovies, nextPopPage, urlPopPath} = popMoviesState;
+  const {isLoading, movies, nextPage, urlPath} = popMoviesState;
 
-  const getInitialData = () => {
-    getInitialMoviesData().then(() => {
-      const {popMoviesData} = initMovies;
+  const getInitialData = () =>
+    getInitialMoviesData().then((props) => {
+      const {popMovies} = props;
       setState({
         ...popMoviesState,
-        popMovies: popMoviesData,
+        movies: popMovies,
         isLoading: false,
-        urlPopPath: POPULAR_MOVIES.tabs[0].url,
+        urlPath: POPULAR_MOVIES.tabs[0].url,
       });
     });
-  };
   useEffect(() => {
     getInitialData();
   }, []);
 
-  const getDataOnChangeType = (tabTitle) => {
+  const getDataOnChangeType = (tabTitle) =>
     POPULAR_MOVIES.tabs.map((item) => {
       if (item.title === tabTitle)
-        return getData(urlPathConstructor('movies', [item.url, 1])).then(
+        return getData(urlPathConstructor(MOVIES_STRING, [item.url, 1])).then(
           (res) => {
             setState({
               ...popMoviesState,
-              nextPopPage: 2,
-              popMovies: res.results,
+              nextPage: 2,
+              movies: res.results,
               isLoading: false,
-              urlPopPath: item.url,
+              urlPath: item.url,
             });
           },
         );
     });
-  };
-  const loadPopOnTabChange = (tabTitle) => {
-    getDataOnChangeType(tabTitle);
-  };
+  const loadPopOnTabChange = (tabTitle) => getDataOnChangeType(tabTitle);
 
   const loadPopOnScroll = () => {
-    return getData(
-      urlPathConstructor('movies', [urlPopPath, nextPopPage]),
-    ).then((res) => {
-      setState({
-        ...popMoviesState,
-        nextPopPage: nextPopPage + 1,
-        popMovies: popMovies.concat(res.results),
-      });
-    });
+    return getData(urlPathConstructor(MOVIES_STRING, [urlPath, nextPage])).then(
+      (res) => {
+        setState({
+          ...popMoviesState,
+          nextPage: nextPage + 1,
+          movies: movies.concat(res.results),
+        });
+      },
+    );
   };
 
   return {
-    popMovies,
+    movies,
     isLoading,
     loadPopOnTabChange,
     loadPopOnScroll,

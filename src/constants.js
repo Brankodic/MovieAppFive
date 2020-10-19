@@ -1,4 +1,5 @@
 export const MOVIE_DETAILS = 'MovieDetails';
+export const MOVIES_STRING = 'movies';
 export const MOVIE_LIST = 'MovieListScreen';
 export const MOVIES = {
   POPULAR_MOVIES: {
