@@ -1,4 +1,5 @@
 import React, {useState} from 'react';
+import _ from 'lodash';
 import {View, StyleSheet} from 'react-native';
 import {MOVIES} from '../../../constants.js';
 import PressableTab from './PressableTab';
@@ -7,67 +8,33 @@ const TabsMovies = ({onTabPress, moviesType}) => {
   const {POPULAR_MOVIES, FREE_MOVIES, TRENDING_MOVIES} = MOVIES;
 
   const [tabState, setTab] = useState({
-    popular: POPULAR_MOVIES.tabs[0].title,
-    free: FREE_MOVIES.tabs[0].title,
-    trending: TRENDING_MOVIES.tabs[0].title,
+    [POPULAR_MOVIES.key]: POPULAR_MOVIES.tabs[0].title,
+    [FREE_MOVIES.key]: FREE_MOVIES.tabs[0].title,
+    [TRENDING_MOVIES.key]: TRENDING_MOVIES.tabs[0].title,
   });
-  const {popular, free, trending} = tabState;
   const {view} = styles;
 
+  const matchingMovie = _.find(
+    MOVIES,
+    (movieCategory) => movieCategory.key === moviesType,
+  );
+
   const onPressTab = (tabTitle) => {
-    if (moviesType === POPULAR_MOVIES.key) setTab({popular: tabTitle});
-    else if (moviesType === FREE_MOVIES.key) setTab({free: tabTitle});
-    else setTab({trending: tabTitle});
+    setTab({[matchingMovie.key]: tabTitle});
     onTabPress(tabTitle, moviesType);
   };
 
-  const renderPopTabs = () => {
-    return POPULAR_MOVIES.tabs.map((tab) => {
-      return (
-        <PressableTab
-          key={tab.title}
-          onPressTab={onPressTab}
-          tabState={popular}
-          tabTitle={tab.title}
-        />
-      );
-    });
-  };
-
-  const renderFreeTabs = () => {
-    return FREE_MOVIES.tabs.map((tab) => {
-      return (
-        <PressableTab
-          key={tab.title}
-          onPressTab={onPressTab}
-          tabState={free}
-          tabTitle={tab.title}
-        />
-      );
-    });
-  };
-
-  const renderTrendTabs = () => {
-    return TRENDING_MOVIES.tabs.map((tab) => {
-      return (
-        <PressableTab
-          key={tab.title}
-          onPressTab={onPressTab}
-          tabState={trending}
-          tabTitle={tab.title}
-        />
-      );
-    });
-  };
-
   const renderTabs = () => {
-    if (moviesType === POPULAR_MOVIES.key) {
-      return renderPopTabs();
-    } else if (moviesType === FREE_MOVIES.key) {
-      return renderFreeTabs();
-    } else {
-      return renderTrendTabs();
-    }
+    return matchingMovie.tabs.map((tab) => {
+      return (
+        <PressableTab
+          key={tab.title}
+          onPressTab={onPressTab}
+          tabState={tabState[matchingMovie.key]}
+          tabTitle={tab.title}
+        />
+      );
+    });
   };
 
   return <View style={view}>{renderTabs()}</View>;

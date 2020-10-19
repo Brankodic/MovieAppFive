@@ -1,18 +1,20 @@
 import React from 'react';
+import _ from 'lodash';
 import {Text, StyleSheet} from 'react-native';
 import {MOVIES} from '../../../constants';
 
 const MoviesSectionTitle = ({type}) => {
   const {text} = styles;
-  const {POPULAR_MOVIES, FREE_MOVIES, TRENDING_MOVIES} = MOVIES;
 
-  const renderedHeader = () => {
-    if (type === POPULAR_MOVIES.key) return POPULAR_MOVIES.title;
-    else if (type === FREE_MOVIES.key) return FREE_MOVIES.title;
-    else return TRENDING_MOVIES.title;
+  const headerTitle = () => {
+    const matchingTitle = _.find(
+      MOVIES,
+      (movieCategory) => movieCategory.key === type,
+    );
+    return matchingTitle.title;
   };
 
-  return <Text style={text}>{renderedHeader()}</Text>;
+  return <Text style={text}>{headerTitle()}</Text>;
 };
 
 const styles = StyleSheet.create({

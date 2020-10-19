@@ -5,7 +5,6 @@ import MovieCard from './MovieCard';
 const MoviesList = (props) => {
   const {movieContainer, item} = styles;
   const {
-    keyHandler,
     movies,
     tabState,
     onEndReach,
@@ -19,6 +18,10 @@ const MoviesList = (props) => {
       animated: true,
     });
   }, [tabState]);
+
+  const keyHandler = (movie) => {
+    return movie.id.toString() + new Date().getTime().toString();
+  };
 
   return (
     <View>

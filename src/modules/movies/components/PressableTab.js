@@ -5,9 +5,11 @@ const PressableTab = (props) => {
   const {onPressTab, tabState, tabTitle} = props;
   const {btn, btnPressed} = styles;
 
+  const style = tabState === tabTitle ? [btn, btnPressed] : btn;
+
   return (
     <Pressable onPress={() => onPressTab(tabTitle)}>
-      <Text style={[tabState === tabTitle ? btnPressed : btn]}>{tabTitle}</Text>
+      <Text style={style}>{tabTitle}</Text>
     </Pressable>
   );
 };
@@ -15,12 +17,8 @@ const PressableTab = (props) => {
 const styles = StyleSheet.create({
   btnPressed: {
     color: '#000000',
-    fontSize: 14,
     fontWeight: 'bold',
-    margin: '3%',
-    borderBottomWidth: 2,
     borderBottomColor: '#0B253F',
-    textAlign: 'center',
   },
   btn: {
     color: '#0B253F',

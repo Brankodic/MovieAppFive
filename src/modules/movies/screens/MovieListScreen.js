@@ -64,10 +64,6 @@ const MovieListScreen = ({navigation}) => {
     }
   };
 
-  const keyHandler = (movie) => {
-    return movie.id.toString() + new Date().getTime().toString();
-  };
-
   const renderLists = () => {
     if (searchListState) {
       return (
@@ -76,7 +72,6 @@ const MovieListScreen = ({navigation}) => {
           <MoviesList
             movies={searchMovieState}
             navigation={navigation}
-            keyHandler={keyHandler}
           />
         </>
       );
@@ -89,7 +84,6 @@ const MovieListScreen = ({navigation}) => {
             handleTabPress={handleTabPress}
             handleOnEndReach={handleOnEndReach}
             navigation={navigation}
-            keyHandler={keyHandler}
           />
           <Movies
             moviesArray={freeMovies}
@@ -97,7 +91,6 @@ const MovieListScreen = ({navigation}) => {
             handleTabPress={handleTabPress}
             handleOnEndReach={handleOnEndReach}
             navigation={navigation}
-            keyHandler={keyHandler}
           />
           <Movies
             moviesArray={trendMovies}
@@ -105,7 +98,6 @@ const MovieListScreen = ({navigation}) => {
             handleTabPress={handleTabPress}
             handleOnEndReach={handleOnEndReach}
             navigation={navigation}
-            keyHandler={keyHandler}
           />
         </ScrollView>
       );
@@ -118,7 +110,7 @@ const MovieListScreen = ({navigation}) => {
         <ActivityIndicator animating={isLoading} size="large" color="#aaa" />
       </View>
       <SearchInput
-        setSearchActiveState={handleSearchScreenChange}
+        onSearchScreenChange ={handleSearchScreenChange}
         onInputValueChange={handleSearchQuery}
       />
       {renderLists()}

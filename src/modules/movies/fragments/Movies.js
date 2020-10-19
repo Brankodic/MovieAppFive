@@ -5,7 +5,6 @@ const Movies = (props) => {
   const [tabState, setTabState] = useState('');
   const {
     navigation,
-    keyHandler,
     moviesArray,
     moviesType,
     handleTabPress,
@@ -24,7 +23,6 @@ const Movies = (props) => {
       <MoviesList
         onEndReach={handleOnEndReach}
         tabState={tabState}
-        keyHandler={keyHandler}
         moviesType={moviesType}
         movies={moviesArray}
         navigation={navigation}
