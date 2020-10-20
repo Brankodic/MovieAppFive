@@ -1,38 +1,54 @@
-import 'react-native-gesture-handler';
 import React from 'react';
-import {View} from 'react-native';
+import {View, StyleSheet} from 'react-native';
+import 'react-native-gesture-handler';
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
-
-import {MovieListScreen, MovieDetailsScreen} from './src/movies/fragments';
-import {HeaderImage, HeaderBackImage} from './src/movies/components';
+import {screens} from './src/modules/movies';
+import {MOVIE_LIST, MOVIE_DETAILS} from './src/constants';
+import {HeaderImage, HeaderBackImage} from './src/modules/navigation/components';
 
 const Stack = createStackNavigator();
 
+const styles = StyleSheet.create({
+  backgroundWhite: {
+    backgroundColor: 'white',
+  },
+  backgroundDarkBlue: {
+    backgroundColor: '#0B253F',
+  },
+});
+const {backgroundWhite, backgroundDarkBlue} = styles;
+
+const navOptionsListScreen = {
+  headerTitle: (props) => <HeaderImage {...props} />,
+  cardStyle: backgroundWhite,
+  headerStyle: backgroundDarkBlue,
+};
+
+const navOptionsDetailsScreen = {
+  headerBackImage: HeaderBackImage,
+  headerTitle: (props) => <HeaderImage {...props} />,
+  headerRight: () => <View />,
+  cardStyle: backgroundWhite,
+  headerStyle: backgroundDarkBlue,
+  headerBackTitleVisible: false,
+};
+
 class App extends React.Component {
   render() {
+    const {MovieDetailsScreen, MovieListScreen} = screens;
+
     return (
       <NavigationContainer>
-        <Stack.Navigator initialRouteName="MovieListScreen">
+        <Stack.Navigator initialRouteName={MOVIE_LIST}>
           <Stack.Screen
-            options={{
-              headerTitle: (props) => <HeaderImage {...props} />,
-              cardStyle: {backgroundColor: 'white'},
-              headerStyle: {backgroundColor: '#0B253F'},
-            }}
-            name="MovieListScreen"
+            options={navOptionsListScreen}
+            name={MOVIE_LIST}
             component={MovieListScreen}
           />
           <Stack.Screen
-            options={{
-              headerBackImage: () => <HeaderBackImage />,
-              headerTitle: (props) => <HeaderImage {...props} />,
-              headerRight: () => <View />,
-              cardStyle: {backgroundColor: 'white'},
-              headerStyle: {backgroundColor: '#0B253F'},
-              headerBackTitleVisible: false
-            }}
-            name="MovieDetails"
+            options={navOptionsDetailsScreen}
+            name={MOVIE_DETAILS}
             component={MovieDetailsScreen}
           />
         </Stack.Navigator>
