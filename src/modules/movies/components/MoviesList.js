@@ -4,13 +4,7 @@ import MovieCard from './MovieCard';
 
 const MoviesList = (props) => {
   const {movieContainer, item} = styles;
-  const {
-    movies,
-    tabState,
-    onEndReach,
-    navigation,
-    moviesType,
-  } = props;
+  const {movies, tabState, onEndReach, navigation, moviesType} = props;
 
   useEffect(() => {
     listViewRef.scrollToOffset({
@@ -31,10 +25,10 @@ const MoviesList = (props) => {
         }}
         contentContainerStyle={movieContainer}
         horizontal
-        onEndReached={() => onEndReach(moviesType)}
-        data={movies}
-        keyExtractor={keyHandler}
-        renderItem={(movie) => {
+        onEndReached={() => onEndReach(moviesType)} //There will allways be 3 different versions of this list,
+        data={movies} //..and I handle onendReach in movielistscreen which creates 3 different lists
+        keyExtractor={keyHandler} //so I pass this moviesType here as props so that the handler function would know which specific list is it
+        renderItem={(movie) => { 
           return (
             <View style={item}>
               <MovieCard movie={movie.item} navigation={navigation} />
